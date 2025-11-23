@@ -1,4 +1,8 @@
 package com.serviziorapido.backend.model;
 
-public class StatoRichiesta {
+public enum StatoRichiesta {
+    APERTA,
+    IN_LAVORAZIONE,
+    COMPLETATA,
+    ANNULLATA
 }
