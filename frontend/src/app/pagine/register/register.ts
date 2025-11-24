@@ -9,13 +9,13 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './register.html',
-  styleUrls: ['./register.scss']
+  styleUrls: ['./register.css']
 })
 export class RegisterComponent {
-  
+
   tipoProfilo: string = 'CLIENTE'; // Default
   utente: any = {
-    nome: '', cognome: '', email: '', password: '', 
+    nome: '', cognome: '', email: '', password: '',
     indirizzo: '', specializzazione: '', biografia: ''
   };
   messaggio = '';

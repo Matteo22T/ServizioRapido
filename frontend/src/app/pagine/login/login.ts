@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterLink], // Aggiungi RouterLink agli import se usi il link "Registrati qui"
-  templateUrl: './login.html', 
-  styleUrls: ['./login.scss']
+  templateUrl: './login.html',
+  styleUrls: ['./login.css']
 })
 export class LoginComponent {
   email = '';
@@ -26,7 +26,7 @@ export class LoginComponent {
       next: (user: any) => {
         // Salviamo l'utente nel browser
         localStorage.setItem('currentUser', JSON.stringify(user));
-        
+
         // Reindirizzamento in base al ruolo (se hai creato le dashboard)
         // Per ora mandiamo alla home
         this.router.navigate(['/']);
