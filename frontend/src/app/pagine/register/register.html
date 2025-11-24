@@ -1,0 +1,29 @@
+<div class="container" style="max-width: 400px; margin: auto; padding-top: 50px;">
+  <h2>Registrazione ServizioRapido</h2>
+
+  <label><strong>Sono un:</strong></label>
+  <select [(ngModel)]="tipoProfilo" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+    <option value="CLIENTE">Cliente (Cerco servizi)</option>
+    <option value="PROFESSIONISTA">Professionista (Offro servizi)</option>
+  </select>
+
+  <input type="text" [(ngModel)]="utente.nome" placeholder="Nome" style="width: 100%; margin-bottom: 10px;">
+  <input type="text" [(ngModel)]="utente.cognome" placeholder="Cognome" style="width: 100%; margin-bottom: 10px;">
+  <input type="email" [(ngModel)]="utente.email" placeholder="Email" style="width: 100%; margin-bottom: 10px;">
+  <input type="password" [(ngModel)]="utente.password" placeholder="Password" style="width: 100%; margin-bottom: 10px;">
+  
+  <div *ngIf="tipoProfilo === 'CLIENTE'">
+    <input type="text" [(ngModel)]="utente.indirizzo" placeholder="Il tuo Indirizzo" style="width: 100%; margin-bottom: 10px;">
+  </div>
+
+  <div *ngIf="tipoProfilo === 'PROFESSIONISTA'">
+    <input type="text" [(ngModel)]="utente.specializzazione" placeholder="Specializzazione (es. Idraulico)" style="width: 100%; margin-bottom: 10px;">
+    <textarea [(ngModel)]="utente.biografia" placeholder="Breve biografia..." style="width: 100%; margin-bottom: 10px;"></textarea>
+  </div>
+
+  <button (click)="registrati()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none;">
+    Registrati
+  </button>
+  
+  <p *ngIf="messaggio" style="color: red; margin-top: 10px;">{{ messaggio }}</p>
+</div>
