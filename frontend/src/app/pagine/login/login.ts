@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+import { AutenticazioneService } from '../../service/autenticazione-service';
 
 @Component({
   selector: 'app-login',
@@ -16,23 +17,26 @@ export class LoginComponent {
   password = '';
   errore = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private authService: AutenticazioneService, private router: Router) {}
 
   login() {
-    this.http.post('http://localhost:8080/api/auth/login', {
-      email: this.email,
-      password: this.password
-    }).subscribe({
+
+    this.authService.login(this.email, this.password).subscribe({
       next: (user: any) => {
         // Salviamo l'utente nel browser
         localStorage.setItem('currentUser', JSON.stringify(user));
 
-        // Reindirizzamento in base al ruolo (se hai creato le dashboard)
-        // Per ora mandiamo alla home
-        this.router.navigate(['/']);
+        if (user.ruolo === 'PROFESSIONISTA') {
+          // this.router.navigate(['/dashboard-pro']); (quando l'avrai creata)
+          this.router.navigate(['/']); // Per ora Home
+        } else {
+          // this.router.navigate(['/dashboard-cliente']); (quando l'avrai creata)
+          this.router.navigate(['/']); // Per ora Home
+        }
+
         alert('Benvenuto ' + user.nome);
       },
-      error: () => this.errore = 'Credenziali errate'
+      error: () => this.errore = 'Credenziali errate o utente non trovato'
     });
   }
 }

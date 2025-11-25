@@ -7,7 +7,7 @@ export class Professionista extends Utente {
     cognome: string,
     email: string,
     password: string,
-    public partitaIva?: string,
+    public biografia?: string,
     public specializzazione?: string,
   ) {
     super(id, nome, cognome, email, password);
