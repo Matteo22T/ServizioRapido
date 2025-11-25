@@ -1,29 +1,65 @@
-<div class="container" style="max-width: 400px; margin: auto; padding-top: 50px;">
-  <h2>Registrazione ServizioRapido</h2>
-
-  <label><strong>Sono un:</strong></label>
-  <select [(ngModel)]="tipoProfilo" style="width: 100%; padding: 8px; margin-bottom: 10px;">
-    <option value="CLIENTE">Cliente (Cerco servizi)</option>
-    <option value="PROFESSIONISTA">Professionista (Offro servizi)</option>
-  </select>
-
-  <input type="text" [(ngModel)]="utente.nome" placeholder="Nome" style="width: 100%; margin-bottom: 10px;">
-  <input type="text" [(ngModel)]="utente.cognome" placeholder="Cognome" style="width: 100%; margin-bottom: 10px;">
-  <input type="email" [(ngModel)]="utente.email" placeholder="Email" style="width: 100%; margin-bottom: 10px;">
-  <input type="password" [(ngModel)]="utente.password" placeholder="Password" style="width: 100%; margin-bottom: 10px;">
-  
-  <div *ngIf="tipoProfilo === 'CLIENTE'">
-    <input type="text" [(ngModel)]="utente.indirizzo" placeholder="Il tuo Indirizzo" style="width: 100%; margin-bottom: 10px;">
+<div class="auth-container">
+  <div class="auth-card register-card"> <div class="auth-header">
+    <h2>Crea un Account</h2>
+    <p>Unisciti a ServizioRapido</p>
   </div>
 
-  <div *ngIf="tipoProfilo === 'PROFESSIONISTA'">
-    <input type="text" [(ngModel)]="utente.specializzazione" placeholder="Specializzazione (es. Idraulico)" style="width: 100%; margin-bottom: 10px;">
-    <textarea [(ngModel)]="utente.biografia" placeholder="Breve biografia..." style="width: 100%; margin-bottom: 10px;"></textarea>
-  </div>
+    <div class="profile-selector">
+      <label>Voglio registrarmi come:</label>
+      <select [(ngModel)]="tipoProfilo" class="form-select">
+        <option value="CLIENTE">🏠 Cliente (Cerco servizi)</option>
+        <option value="PROFESSIONISTA">🛠️ Professionista (Offro servizi)</option>
+      </select>
+    </div>
 
-  <button (click)="registrati()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none;">
-    Registrati
-  </button>
-  
-  <p *ngIf="messaggio" style="color: red; margin-top: 10px;">{{ messaggio }}</p>
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Nome</label>
+        <input type="text" [(ngModel)]="form.nome" placeholder="Mario">
+      </div>
+      <div class="form-group half">
+        <label>Cognome</label>
+        <input type="text" [(ngModel)]="form.cognome" placeholder="Rossi">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="form.email" placeholder="mario@esempio.com">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="form.password" placeholder="Scegli una password forte">
+    </div>
+
+    <div *ngIf="tipoProfilo === 'CLIENTE'" class="dynamic-section slide-in">
+      <div class="form-group">
+        <label>Indirizzo (per trovare professionisti vicini)</label>
+        <input type="text" [(ngModel)]="form.indirizzo" placeholder="Via Roma 10, Milano">
+      </div>
+    </div>
+
+    <div *ngIf="tipoProfilo === 'PROFESSIONISTA'" class="dynamic-section slide-in">
+      <div class="form-group">
+        <label>Specializzazione</label>
+        <input type="text" [(ngModel)]="form.specializzazione" placeholder="Es. Idraulico, Elettricista...">
+      </div>
+      <div class="form-group">
+        <label>Breve Biografia</label>
+        <textarea [(ngModel)]="form.biografia" rows="3" placeholder="Descrivi la tua esperienza..."></textarea>
+      </div>
+    </div>
+
+    <button class="btn-primary" (click)="registrati()">Registrati Ora</button>
+
+    <p *ngIf="messaggio" class="info-msg" [ngClass]="{'error': messaggio.includes('Errore')}">
+      {{ messaggio }}
+    </p>
+
+    <div class="auth-footer">
+      <p>Hai già un account? <a routerLink="/login">Accedi qui</a></p>
+    </div>
+
+  </div>
 </div>

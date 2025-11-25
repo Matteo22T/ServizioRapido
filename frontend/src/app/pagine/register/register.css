@@ -1,125 +1,123 @@
-.container {
-  max-width: 400px;
-  margin: auto;
-  padding-top: 50px;
-
-  h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-    font-size: 24px;
-    font-weight: 600;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-    font-size: 14px;
-
-    strong {
-      font-weight: 600;
-    }
-  }
-
-  select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    background-color: white;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-
-    &:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-    }
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-
-    &::placeholder {
-      color: #999;
-    }
-
-    &:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-    }
-  }
-
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: inherit;
-    min-height: 100px;
-    resize: vertical;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-
-    &::placeholder {
-      color: #999;
-    }
-
-    &:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-    }
-  }
-
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  }
-
-  p {
-    margin-top: 15px;
-    font-size: 14px;
-    text-align: center;
-
-    &[style*="color: red"] {
-      color: #dc3545;
-    }
-  }
+/* Riutilizzo le basi del Login per coerenza */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2563eb, #60a5fa); /* Blu ServizioRapido */
+  padding: 20px; /* Spazio per schermi piccoli */
 }
+
+.auth-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 500px; /* Leggermente più larga del login */
+  text-align: center;
+}
+
+.auth-header h2 { margin: 0 0 0.5rem 0; color: #1f2937; }
+.auth-header p { color: #6b7280; margin-bottom: 2rem; }
+
+/* Stili specifici per il form */
+.form-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.form-group label, .profile-selector label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+/* Input, Select e Textarea condivisi */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  background-color: #f0f7ff;
+}
+
+/* Layout a due colonne per Nome e Cognome */
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+.form-group.half {
+  flex: 1;
+}
+
+/* Selettore Profilo in evidenza */
+.profile-selector {
+  background-color: #f3f4f6;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  border-left: 5px solid #2563eb;
+}
+
+.form-select {
+  cursor: pointer;
+  background-color: white;
+}
+
+/* Animazione per i campi che appaiono (Cliente/Pro) */
+.dynamic-section {
+  background-color: #fffbeb; /* Giallo chiarissimo per evidenziare i campi extra */
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px dashed #f59e0b; /* Arancione tratteggiato */
+  text-align: left;
+}
+
+.slide-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bottone */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* Footer e Messaggi */
+.auth-footer { margin-top: 1.5rem; font-size: 0.9rem; }
+.auth-footer a { color: #2563eb; text-decoration: none; font-weight: 600; }
+
+.info-msg { margin-top: 15px; font-weight: bold; color: green; }
+.info-msg.error { color: #dc3545; }

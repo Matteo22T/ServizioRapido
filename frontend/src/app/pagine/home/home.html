@@ -1,29 +1,35 @@
-<div style="text-align: center; margin-top: 80px; font-family: Arial, sans-serif;">
-  
-  <h1 style="color: #333; font-size: 3em;">Benvenuto su ServizioRapido</h1>
-  <p style="color: #666; font-size: 1.2em;">La piattaforma che connette Clienti e Professionisti in un click.</p>
-
-  <div style="margin-top: 40px;">
-    <button routerLink="/login" 
-            style="margin: 10px; padding: 15px 30px; font-size: 18px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px;">
-      Accedi
-    </button>
-
-    <button routerLink="/register" 
-            style="margin: 10px; padding: 15px 30px; font-size: 18px; cursor: pointer; background-color: #6c757d; color: white; border: none; border-radius: 5px;">
-      Registrati
-    </button>
+<nav class="navbar">
+  <div class="logo">ServizioRapido</div>
+  <div class="nav-links">
+    <a routerLink="/login" class="nav-btn">Accedi</a>
+    <a routerLink="/register" class="nav-btn btn-outline">Registrati</a>
   </div>
+</nav>
 
-  <div style="display: flex; justify-content: center; gap: 50px; margin-top: 60px;">
-    <div style="max-width: 300px;">
-      <h3>Per i Clienti</h3>
-      <p>Pubblica una richiesta e ricevi preventivi in pochi minuti da professionisti qualificati.</p>
-    </div>
-    <div style="max-width: 300px;">
-      <h3>Per i Professionisti</h3>
-      <p>Trova nuovi lavori nella tua zona, invia proposte e fai crescere il tuo business.</p>
+<header class="hero">
+  <div class="hero-content">
+    <h1>Trova il professionista giusto,<br> in un attimo.</h1>
+    <p>La piattaforma che connette chi cerca servizi con chi li offre.</p>
+    <div class="hero-buttons">
+      <button routerLink="/register" class="btn-primary big">Inizia Ora</button>
     </div>
   </div>
+</header>
 
-</div>
+<section class="roles-section">
+  <h2>Come vuoi utilizzare la piattaforma?</h2>
+
+  <div class="cards-container">
+    <div class="role-card client">
+      <div class="icon">🏠</div>
+      <h3>Sei un Cliente?</h3>
+      <p>Pubblica le tue richieste e ricevi preventivi gratuiti in pochi minuti.</p>
+    </div>
+
+    <div class="role-card pro">
+      <div class="icon">🛠️</div>
+      <h3>Sei un Professionista?</h3>
+      <p>Trova nuovi clienti nella tua zona e fai crescere il tuo business.</p>
+    </div>
+  </div>
+</section>
