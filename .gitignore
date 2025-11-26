@@ -1,10 +1,47 @@
+### --- GLOBAL & LOGS --- ###
+# Ignora tutti i file di log ovunque si trovino
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.pid
+
+# File di sistema
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+### --- SPRING BOOT / MAVEN --- ###
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+### --- ANGULAR / FRONTEND --- ###
+# Dipendenze
+node_modules/
+
+# Build Output (Unificato: vale sia per Angular che per NetBeans)
+/dist/
+/out-tsc/
+
+# Angular Cache & Misc
+.angular/
+.sass-cache/
+connect.lock
+livereload.js
+sftp-config.json
+
+# Test e Coverage
+coverage/
+cypress/videos
+cypress/screenshots
+
+### --- IDE: STS / Eclipse --- ###
 .apt_generated
 .classpath
 .factorypath
@@ -12,22 +49,28 @@ target/
 .settings
 .springBeans
 .sts4-cache
+bin/
 
-### IntelliJ IDEA ###
+### --- IDE: IntelliJ IDEA --- ###
 .idea
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+### --- IDE: NetBeans --- ###
+# Nota: 'dist' è stato spostato sopra nella sezione Angular
 /nbproject/private/
 /nbbuild/
-/dist/
 /nbdist/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+### --- IDE: VS Code --- ###
 .vscode/
+*.code-workspace
+
+### --- SECURITY --- ###
+.env
+.env.local
