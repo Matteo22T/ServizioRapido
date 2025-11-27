@@ -15,6 +15,9 @@ public class AutenticazioneService {
     public Utente autenticaUtente(String email, String password) {
         Optional<Utente> utente = utenteRepo.findByEmail(email);
 
+        System.out.println(utente.isPresent());
+        System.out.println("Credenziali: " + email + " - " + password + " - " + utente.get().getPassword() + " - " + utente.get().getEmail());
+
         if (utente.isPresent() && utente.get().getPassword().equals(password)) {
             return utente.get();
         }

@@ -12,12 +12,13 @@ export class AutenticazioneService {
   // L'URL base del tuo controller Java
   private urlRegister = 'http://localhost:8080/api/auth/register';
 
-  private urlLogin = 'http://localhost:8080/api/auth/register';
+  private urlLogin = 'http://localhost:8080/api/auth/login';
 
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<any> {
     const body = { email, password };
+    console.log(body);
     return this.http.post(this.urlLogin, body);
   }
 
@@ -28,7 +29,6 @@ export class AutenticazioneService {
 
   // Qui specifichiamo che ci aspettiamo un oggetto di tipo Professionista
   registerProfessionista(professionista: Professionista): Observable<any> {
-    // CORREZIONE: prima c'era scritto "utente", ora passiamo "professionista"
     return this.http.post(`${this.urlRegister}/professionista`, professionista);
   }
 }

@@ -28,6 +28,18 @@ public class RichiestaServizioController {
 
     @GetMapping("/mie/{idCliente}")
     public ResponseEntity<List<RichiestaServizio>> getMieRichieste (@PathVariable Long idCliente){
+        System.out.println("invio richieste");
         return ResponseEntity.ok(richiestaService.getRichiesteDelCliente(idCliente));
+    }
+
+    @DeleteMapping("/eliminate/{id}")
+    public ResponseEntity<?> annullaRichiesta(@PathVariable Long id){
+        try {
+            richiestaService.annullaRichiesta(id);
+            return ResponseEntity.ok("Richiesta eliminata con successo");
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

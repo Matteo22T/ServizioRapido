@@ -1,0 +1,48 @@
+<nav class="dash-nav">
+  <div class="logo">ServizioRapido</div>
+  <div class="user-info">
+    <span>Ciao, <strong>{{ utente?.nome }}</strong></span>
+    <button (click)="logout()" class="btn-logout">Esci</button>
+  </div>
+</nav>
+
+<div class="dash-container">
+
+  <div class="dash-card">
+    <div class="card-header">
+      <h3>Nuova Richiesta</h3>
+      <p>Descrivi di cosa hai bisogno</p>
+    </div>
+
+    <div class="form-group">
+      <textarea [(ngModel)]="nuovaRichiesta"
+                placeholder="Es. Ho bisogno di un idraulico per riparare un tubo che perde in cucina..."
+                rows="4"></textarea>
+    </div>
+
+    <button (click)="pubblica()" class="btn-primary" [disabled]="!nuovaRichiesta">
+      Pubblica Richiesta
+    </button>
+
+    <p *ngIf="messaggio" class="success-msg">{{ messaggio }}</p>
+  </div>
+
+  <div class="requests-list">
+    <h3>Le tue richieste recenti</h3>
+
+    <div *ngIf="mieRichieste.length === 0" class="empty-state">
+      <p>Non hai ancora pubblicato nessuna richiesta.</p>
+    </div>
+
+    <div *ngFor="let req of mieRichieste" class="request-item">
+      <div class="req-header">
+        <span class="req-id">#{{ req.idRichiesta }}</span>
+        <span class="status-badge" [ngClass]="req.statoRichiesta">
+          {{ req.statoRichiesta }}
+        </span>
+      </div>
+      <p class="req-body">{{ req.dettagli }}</p>
+    </div>
+  </div>
+
+</div>

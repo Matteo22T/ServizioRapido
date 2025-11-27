@@ -19,24 +19,34 @@ export class LoginComponent {
 
   constructor(private authService: AutenticazioneService, private router: Router) {}
 
+  // typescript
   login() {
-
+    console.log('login start', { email: this.email, hasPassword: !!this.password });
     this.authService.login(this.email, this.password).subscribe({
-      next: (user: any) => {
-        // Salviamo l'utente nel browser
-        localStorage.setItem('currentUser', JSON.stringify(user));
-
-        if (user.ruolo === 'PROFESSIONISTA') {
-          // this.router.navigate(['/dashboard-pro']); (quando l'avrai creata)
-          this.router.navigate(['/']); // Per ora Home
-        } else {
-          // this.router.navigate(['/dashboard-cliente']); (quando l'avrai creata)
-          this.router.navigate(['/']); // Per ora Home
+      next: (res: any) => {
+        console.log('login response raw:', res);
+        const user = res?.user ?? res; // supporta sia { user: {...} } che {...}
+        if (!user) {
+          console.error('Nessun utente nella response');
+          this.errore = 'Errore server: response vuota';
+          return;
         }
-
-        alert('Benvenuto ' + user.nome);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        const ruolo = user.ruolo ?? user.role ?? user.tipo;
+        console.log('ruolo:', ruolo);
+        if (ruolo === 'PROFESSIONISTA') {
+          this.router.navigate(['/']);
+        } else {
+          this.router.navigate(['/dashboard-cliente']);
+        }
+        alert('Benvenuto ' + (user.nome ?? user.name ?? ''));
       },
-      error: () => this.errore = 'Credenziali errate o utente non trovato'
+      error: (err) => {
+        console.error('login error:', err);
+        // Mostra messaggio più utile se presente nel payload
+        this.errore = err?.error?.message ?? err?.message ?? 'Credenziali errate o utente non trovato';
+      }
     });
   }
+
 }

@@ -19,9 +19,9 @@ public class PropostaServizioController {
         return ResponseEntity.ok(propostaServizioService.pubblicaProposta(proposta));
     }
 
-    @PutMapping("/modificate/{id}")
+    @PutMapping("/modifica/{id}")
     public ResponseEntity<?> modificaProposta(@PathVariable Long id,@RequestBody PropostaServizio proposta){
-        try { //metto il ? (jolly) per non avere per forza un tipo di ritorno: utile per eccezioni
+        try {
             return ResponseEntity.ok(propostaServizioService.modificaProposta(id, proposta));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -38,7 +38,7 @@ public class PropostaServizioController {
         }
     }
 
-    @GetMapping("/proposte/{idProfessionista}")
+    @GetMapping("professionista/{idProfessionista}")
     public ResponseEntity<List<PropostaServizio>> vediProposte(@PathVariable Long idRichiesta){
         return ResponseEntity.ok(propostaServizioService.getProposteProfessionista(idRichiesta));
     }
@@ -47,6 +47,26 @@ public class PropostaServizioController {
     public ResponseEntity<List<PropostaServizio>> vediProposteDiUnaRichiesta(@PathVariable Long idRichiesta){
         return ResponseEntity.ok(propostaServizioService.getPropostePerRichiesta(idRichiesta));
     }
+
+    @PutMapping("/accetta/{idProposta}/{idRichiesta}")
+    public  ResponseEntity<?> accettaProposta(@PathVariable Long idProposta,@PathVariable Long idRichiesta)
+    {
+        try {
+            return ResponseEntity.ok(propostaServizioService.accettaProposta(idProposta,idRichiesta));
+            } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/rifiuta/{idProposta}")
+    public ResponseEntity<?> rifiutaProposta(@PathVariable Long idProposta){
+        try {
+            return ResponseEntity.ok(propostaServizioService.rifiutaProposta(idProposta));
+            } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     }
 

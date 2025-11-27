@@ -51,4 +51,20 @@ public class PropostaServizioService {
     public List<PropostaServizio> getPropostePerRichiesta(Long idRichiesta){
         return propostaRepo.findByRichiestaRiferimento_IdRichiesta(idRichiesta);
     }
+
+    public PropostaServizio accettaProposta(Long idProposta, Long idRichiesta){
+        PropostaServizio proposta = propostaRepo.findById(idProposta).get();
+        RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta).get();
+        richiesta.setStatoRichiesta(StatoRichiesta.IN_LAVORAZIONE);
+        proposta.setStatoProposta(StatoProposta.ACCETTATA);
+        richiesta.setPropostaAccettata(proposta);
+        richiestaRepo.save(richiesta);
+        return propostaRepo.save(proposta);
+    }
+
+    public PropostaServizio rifiutaProposta(Long idProposta){
+        PropostaServizio proposta = propostaRepo.findById(idProposta).get();
+        proposta.setStatoProposta(StatoProposta.RIFIUTATA);
+        return propostaRepo.save(proposta);
+    }
 }
