@@ -83,3 +83,20 @@ input:focus {
   text-decoration: none;
   font-weight: 600;
 }
+
+.forgot-password {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.forgot-password a {
+  color: #6b7280; /* Grigio scuro per non distrarre troppo */
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot-password a:hover {
+  color: #2563eb; /* Blu (Primary color) al passaggio del mouse */
+  text-decoration: underline;
+}

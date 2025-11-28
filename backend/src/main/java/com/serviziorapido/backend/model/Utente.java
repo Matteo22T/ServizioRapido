@@ -2,6 +2,8 @@ package com.serviziorapido.backend.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "utente")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,6 +21,16 @@ public abstract class Utente {
 
     private String password;
     private String telefono;
+
+    private String resetToken;
+    private LocalDateTime resetTokenScadenza;
+
+    // Getters e Setters per i nuovi campi
+    public String getResetToken() { return resetToken; }
+    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
+
+    public LocalDateTime getResetTokenScadenza() { return resetTokenScadenza; }
+    public void setResetTokenScadenza(LocalDateTime resetTokenScadenza) { this.resetTokenScadenza = resetTokenScadenza; }
 
     // Getters e Setters
     public Long getIdUtente() { return idUtente; }

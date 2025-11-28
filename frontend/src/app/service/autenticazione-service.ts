@@ -18,7 +18,6 @@ export class AutenticazioneService {
 
   login(email: string, password: string): Observable<any> {
     const body = { email, password };
-    console.log(body);
     return this.http.post(this.urlLogin, body);
   }
 
@@ -30,5 +29,13 @@ export class AutenticazioneService {
   // Qui specifichiamo che ci aspettiamo un oggetto di tipo Professionista
   registerProfessionista(professionista: Professionista): Observable<any> {
     return this.http.post(`${this.urlRegister}/professionista`, professionista);
+  }
+
+  richiediReset(email: string): Observable<any> {
+    return this.http.post(`${this.urlLogin}/recupero-password`, { email }, { responseType: 'text' });
+  }
+
+  eseguiReset(token: string, password: string): Observable<any> {
+    return this.http.post(`${this.urlLogin}/reset-password`, { token, password });
   }
 }

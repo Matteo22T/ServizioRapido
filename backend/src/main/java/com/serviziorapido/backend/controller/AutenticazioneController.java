@@ -43,7 +43,6 @@ public class AutenticazioneController {
     public ResponseEntity<?> registraCliente(@RequestBody Cliente cliente) {
         try {
             Utente salvato = authService.registraUtente(cliente);
-            // Restituisci il DTO, non l'Entity con la password!
             return ResponseEntity.ok(convertiInClienteDTO((Cliente) salvato));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -60,6 +59,27 @@ public class AutenticazioneController {
         }
     }
 
+    @PostMapping("/login/recupero-password")
+    public ResponseEntity<?> richiediReset(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        authService.avviaRecuperoPassword(email);
+        // Rispondiamo sempre OK per sicurezza (privacy), anche se la mail non esiste
+        return ResponseEntity.ok("Se l'email esiste, riceverai le istruzioni.");
+    }
+
+    @PostMapping("/login/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> payload) {
+        String token = payload.get("token");
+        String nuovaPassword = payload.get("password");
+
+        boolean successo = authService.completaRecuperoPassword(token, nuovaPassword);
+
+        if (successo) {
+            return ResponseEntity.ok("Password aggiornata con successo!");
+        } else {
+            return ResponseEntity.badRequest().body("Token non valido o scaduto.");
+        }
+    }
 
 
 
