@@ -99,6 +99,7 @@ public class AutenticazioneService {
         }
 
         // Aggiorno password e pulisco il token
+        verificaInformazioni(utente);
         utente.setPassword(nuovaPassword);
         utente.setResetToken(null);
         utente.setResetTokenScadenza(null);

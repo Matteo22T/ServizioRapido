@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // Serve per leggere il token dall'URL
+import { ActivatedRoute, Router } from '@angular/router';
 import { AutenticazioneService } from '../../service/autenticazione-service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './reset-password.html',
   styleUrls: ['./reset-password.css']
 })
@@ -15,12 +17,15 @@ export class ResetPassword implements OnInit {
   token = '';
   nuovaPassword = '';
   messaggio = '';
-  successo = false;
+
+  mostraToast = false;
+  isErrore = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AutenticazioneService
+    private authService: AutenticazioneService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -31,23 +36,36 @@ export class ResetPassword implements OnInit {
   salvaPassword() {
     if(!this.token) {
       this.messaggio = "Token mancante. Riprova dal link email.";
+      this.isErrore = true; // Diventa rosso
+      this.mostraToast = true;
+
+      this.cd.detectChanges();
+
+      setTimeout(() => this.mostraToast = false, 3000);
       return;
     }
 
     this.authService.eseguiReset(this.token, this.nuovaPassword).subscribe({
-      next: () => {
-        this.successo = true;
-        this.messaggio = 'Password aggiornata con successo! Verrai reindirizzato al login...';
+      next: (res: any) => {
+        this.messaggio = res;
 
-        // ASPETTA 3 SECONDI E POI VAI AL LOGIN
+        this.isErrore = false;
+        this.mostraToast = true;
+        this.cd.detectChanges();
+
         setTimeout(() => {
+          this.mostraToast = false;
           this.router.navigate(['/login']);
         }, 3000);
       },
       error: (err) => {
-        this.messaggio = err.error || 'Errore: Token scaduto o password non valida.';
-        this.successo = false;
-      }
+        this.messaggio = err?.error?.message ?? 'Errore di connessione. Riprova più tardi.';
+        this.isErrore = true;
+        this.mostraToast = true;
+
+        this.cd.detectChanges();
+
+        setTimeout(() => this.mostraToast = false, 3000);      }
     });
   }
 }

@@ -36,6 +36,6 @@ export class AutenticazioneService {
   }
 
   eseguiReset(token: string, password: string): Observable<any> {
-    return this.http.post(`${this.urlLogin}/reset-password`, { token, password });
+    return this.http.post(`${this.urlLogin}/reset-password`, { token, password }, { responseType: 'text' });
   }
 }
