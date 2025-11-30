@@ -1,6 +1,6 @@
 // src/app/pagine/register/register.ts
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router , RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AutenticazioneService } from '../../service/autenticazione-service';
@@ -11,7 +11,7 @@ import {Professionista} from '../../model/Professionista.model';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
