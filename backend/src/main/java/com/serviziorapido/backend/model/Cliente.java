@@ -1,5 +1,6 @@
 package com.serviziorapido.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Cliente extends Utente {
     private String indirizzo;
 
     @OneToMany(mappedBy = "clientePubblicante")
+    @JsonIgnore
     private List<RichiestaServizio> richiestePubblicate;
 
     // Getters e Setters

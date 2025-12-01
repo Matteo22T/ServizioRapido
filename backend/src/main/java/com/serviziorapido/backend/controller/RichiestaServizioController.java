@@ -21,9 +21,9 @@ public class RichiestaServizioController {
         return ResponseEntity.ok(richiestaService.creaRichiesta(richiesta));
     }
 
-    @GetMapping("/aperte")
-    public ResponseEntity<List<RichiestaServizio>> getAperte (){
-        return ResponseEntity.ok(richiestaService.getRichiesteAperte());
+    @GetMapping("/compatibili/{idProfessionista}")
+    public ResponseEntity<List<RichiestaServizio>> getCompatibili(@PathVariable Long idProfessionista) {
+        return ResponseEntity.ok(richiestaService.getRichiesteCompatibili(idProfessionista));
     }
 
     @GetMapping("/mie/{idCliente}")

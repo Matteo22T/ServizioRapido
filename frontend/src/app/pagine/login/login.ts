@@ -40,7 +40,7 @@ export class LoginComponent {
         const ruolo = user.ruolo ?? user.role ?? user.tipo;
         console.log('ruolo:', ruolo);
         if (ruolo === 'PROFESSIONISTA') {
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard-professionista']);
         } else {
           this.router.navigate(['/dashboard-cliente']);
         }

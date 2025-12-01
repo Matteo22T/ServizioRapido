@@ -1,5 +1,6 @@
 package com.serviziorapido.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -9,15 +10,18 @@ import java.util.List;
 public class Professionista extends Utente {
 
     private String biografia;
-    private String specializzazione;
+
+    @Enumerated(EnumType.STRING)
+    private CategoriaRichiesta specializzazione;
 
     @OneToMany(mappedBy = "professionistaMittente")
+    @JsonIgnore
     private List<PropostaServizio> proposteInviate;
 
     // Getters e Setters
     public String getBiografia() { return biografia; }
     public void setBiografia(String biografia) { this.biografia = biografia; }
 
-    public String getSpecializzazione() { return specializzazione; }
-    public void setSpecializzazione(String specializzazione) { this.specializzazione = specializzazione; }
+    public CategoriaRichiesta getSpecializzazione() { return specializzazione; }
+    public void setSpecializzazione(CategoriaRichiesta specializzazione) { this.specializzazione = specializzazione; }
 }

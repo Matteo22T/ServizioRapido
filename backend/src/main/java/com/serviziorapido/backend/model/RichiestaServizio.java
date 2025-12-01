@@ -1,5 +1,6 @@
 package com.serviziorapido.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -14,6 +15,11 @@ public class RichiestaServizio {
     @Column(columnDefinition = "TEXT")
     private String dettagli;
 
+    private String indirizzo;
+
+    @Enumerated(EnumType.STRING)
+    private CategoriaRichiesta categoria;
+
     @Enumerated(EnumType.STRING)
     private StatoRichiesta statoRichiesta;
 
@@ -23,17 +29,27 @@ public class RichiestaServizio {
 
     @OneToOne
     @JoinColumn(name = "id_proposta_accettata")
+    @JsonIgnore
     private PropostaServizio propostaAccettata;
 
     @OneToMany(mappedBy = "richiestaRiferimento")
     private List<PropostaServizio> proposteRicevute;
 
-    // Getters e Setters essenziali
+    // --- GETTER E SETTER ---
+
     public Long getIdRichiesta() { return idRichiesta; }
     public void setIdRichiesta(Long idRichiesta) { this.idRichiesta = idRichiesta; }
 
     public String getDettagli() { return dettagli; }
     public void setDettagli(String dettagli) { this.dettagli = dettagli; }
+
+    // Getter/Setter per i nuovi campi
+    public String getIndirizzo() { return indirizzo; }
+    public void setIndirizzo(String indirizzo) { this.indirizzo = indirizzo; }
+
+    public CategoriaRichiesta getCategoria() { return categoria; }
+    public void setCategoria(CategoriaRichiesta categoria) { this.categoria = categoria; }
+    // ------------------------------
 
     public StatoRichiesta getStatoRichiesta() { return statoRichiesta; }
     public void setStatoRichiesta(StatoRichiesta statoRichiesta) { this.statoRichiesta = statoRichiesta; }

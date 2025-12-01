@@ -11,13 +11,17 @@ export class RichiestaService {
 
   constructor(private http: HttpClient) {}
 
-  pubblica(dettagli: string, idCliente: number): Observable<any>{
+  pubblica(dettagli: string, indirizzo: string, categoria: string, idCliente: number): Observable<any>{
     const body = {
-      dettagli,
+      dettagli: dettagli,
+      indirizzo: indirizzo,
+      categoria: categoria, // Deve essere una stringa MAIUSCOLA come l'Enum Java (es. "IDRAULICO")
       clientePubblicante: {
         idUtente: idCliente
       }
     };
+
+    console.log("Invio richiesta:", body); // Debug utile
     return this.http.post(this.url, body);
   }
 
@@ -25,8 +29,8 @@ export class RichiestaService {
     return this.http.get(`${this.url}/mie/${idCliente}`)
   }
 
-  getAperte(): Observable<any>{
-    return this.http.get(`${this.url}/aperte`);
+  getAperte(idProfessionista: number): Observable<any>{
+    return this.http.get(`${this.url}/compatibili/${idProfessionista}`);
   }
 
   elimina(idRichiesta: number): Observable<any>{

@@ -41,10 +41,41 @@
     </div>
 
     <div *ngIf="tipoProfilo === 'PROFESSIONISTA'" class="dynamic-section slide-in">
+
       <div class="form-group">
-        <label>Specializzazione</label>
-        <input type="text" [(ngModel)]="form.specializzazione" placeholder="Es. Idraulico, Elettricista...">
+        <label>Qual è la tua specializzazione principale?</label>
+
+        <select [(ngModel)]="form.specializzazione" class="form-select" style="width: 100%; padding: 10px;">
+          <option value="" disabled selected>Seleziona la tua categoria</option>
+
+          <optgroup label="🛠️ Manutenzione">
+            <option value="IDRAULICO">Idraulico</option>
+            <option value="ELETTRICISTA">Elettricista</option>
+            <option value="FABBRO">Fabbro</option>
+          </optgroup>
+
+          <optgroup label="🏠 Edilizia">
+            <option value="IMBIANCHINO">Imbianchino</option>
+            <option value="MURATORE">Muratore</option>
+            <option value="CARTONGESSISTA">Cartongessista</option>
+            <option value="PAVIMENTISTA">Pavimentista</option>
+            <option value="FALEGNAME">Falegname</option>
+          </optgroup>
+
+          <optgroup label="✨ Pulizia e Giardinaggio">
+            <option value="PULIZIE">Pulizie</option>
+            <option value="DISINFESTAZIONE">Disinfestazione</option>
+            <option value="GIARDINAGGIO">Giardinaggio</option>
+          </optgroup>
+
+          <optgroup label="📦 Altro">
+            <option value="MONTAGGIO_MOBILI">Montaggio Mobili</option>
+            <option value="TRASLOCHI">Traslochi</option>
+            <option value="INFORMATICA">Informatica</option>
+          </optgroup>
+        </select>
       </div>
+
       <div class="form-group">
         <label>Breve Biografia</label>
         <textarea [(ngModel)]="form.biografia" rows="3" placeholder="Descrivi la tua esperienza..."></textarea>

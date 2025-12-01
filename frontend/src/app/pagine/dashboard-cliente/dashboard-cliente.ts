@@ -47,7 +47,7 @@ export class DashboardCliente implements OnInit {
   }
 
   pubblica() {
-    this.richiestaService.pubblica(this.nuovaRichiesta, this.utente.id).subscribe({
+    this.richiestaService.pubblica(this.nuovaRichiesta, this.utente.id, "gg", 2).subscribe({
       next: () => {
         this.messaggio = 'Richiesta pubblicata con successo!';
         this.nuovaRichiesta = ''; // Pulisci campo
