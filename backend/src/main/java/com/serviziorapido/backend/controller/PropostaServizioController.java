@@ -39,8 +39,8 @@ public class PropostaServizioController {
     }
 
     @GetMapping("professionista/{idProfessionista}")
-    public ResponseEntity<List<PropostaServizio>> vediProposte(@PathVariable Long idRichiesta){
-        return ResponseEntity.ok(propostaServizioService.getProposteProfessionista(idRichiesta));
+    public ResponseEntity<List<PropostaServizio>> vediProposte(@PathVariable Long idProfessionista){
+        return ResponseEntity.ok(propostaServizioService.getProposteProfessionista(idProfessionista));
     }
 
     @GetMapping("/richiesta/{idRichiesta}")
