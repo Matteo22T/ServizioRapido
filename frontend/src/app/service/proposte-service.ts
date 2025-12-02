@@ -14,8 +14,8 @@ export class ProposteService {
     const body = {
       dettagli,
       prezzo,
-      idRichiesta,
-      idProfessionista
+      richiestaRiferimento: { idRichiesta: idRichiesta },
+      professionistaMittente: { idUtente: idProfessionista }
     }
     return this.http.post(this.url, body);
 
@@ -29,8 +29,9 @@ export class ProposteService {
     return this.http.get(`${this.url}/richiesta/${idRichiesta}`);
   }
 
-  elimina(idProposta: number){
-    this.http.delete(`${this.url}/eliminate/${idProposta}`);
+  elimina(idProposta: number): Observable<any>{
+    return this.http.delete(`${this.url}/eliminate/${idProposta}`,
+      {responseType: 'text'});
   }
 
   modifica(idProposta: number, dettagli: string, prezzo: number): Observable<any>{

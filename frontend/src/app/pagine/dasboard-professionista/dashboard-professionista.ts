@@ -80,6 +80,7 @@ export class DashboardProfessionista implements OnInit {
     this.proposteService.vediMie(this.utente.id).subscribe({
       next: (data) => {
         this.mieProposte = data;
+        this.cd.detectChanges();
       },
       error: (err) => console.error(err)
     });
@@ -122,10 +123,15 @@ export class DashboardProfessionista implements OnInit {
 
   eliminaProposta(idProposta: number) {
     if (confirm('Sei sicuro di voler eliminare questa proposta?')) {
-      this.proposteService.elimina(idProposta);
-      this.caricaMieProposte();
-      this.messaggio = 'Proposta eliminata';
-      setTimeout(() => this.messaggio = '', 3000);
+      this.proposteService.elimina(idProposta).subscribe({
+        next: () => {
+          this.messaggio = 'Proposta eliminata';
+          this.caricaMieProposte();
+          setTimeout(() => this.messaggio = '', 3000);
+        },
+        error: (err) => console.error(err)
+      });
+
     }
   }
 

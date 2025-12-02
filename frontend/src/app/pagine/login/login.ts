@@ -44,7 +44,6 @@ export class LoginComponent {
         } else {
           this.router.navigate(['/dashboard-cliente']);
         }
-        alert('Benvenuto ' + (user.nome ?? user.name ?? ''));
       },
       error: (err) => {
         console.error('login error:', err);
