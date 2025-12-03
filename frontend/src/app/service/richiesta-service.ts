@@ -25,7 +25,7 @@ export class RichiestaService {
     return this.http.post(this.url, body);
   }
 
-  getMie(idCliente: number): Observable<any> {
+  getMieRichieste(idCliente: number): Observable<any> {
     return this.http.get(`${this.url}/mie/${idCliente}`)
   }
 
@@ -34,7 +34,7 @@ export class RichiestaService {
   }
 
   elimina(idRichiesta: number): Observable<any>{
-    return this.http.delete(`${this.url}/${idRichiesta}`);
+    return this.http.delete(`${this.url}/eliminate/${idRichiesta}`, { responseType: 'text' });
   }
 
 

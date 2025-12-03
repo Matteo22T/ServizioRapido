@@ -1,48 +1,195 @@
-<nav class="dash-nav">
-  <div class="logo">ServizioRapido</div>
-  <div class="user-info">
-    <span>Ciao, <strong>{{ utente?.nome }}</strong></span>
-    <button (click)="logout()" class="btn-logout">Esci</button>
-  </div>
-</nav>
+<div class="dashboard-container">
 
-<div class="dash-container">
-
-  <div class="dash-card">
-    <div class="card-header">
-      <h3>Nuova Richiesta</h3>
-      <p>Descrivi di cosa hai bisogno</p>
-    </div>
-
-    <div class="form-group">
-      <textarea [(ngModel)]="nuovaRichiesta"
-                placeholder="Es. Ho bisogno di un idraulico per riparare un tubo che perde in cucina..."
-                rows="4"></textarea>
-    </div>
-
-    <button (click)="pubblica()" class="btn-primary" [disabled]="!nuovaRichiesta">
-      Pubblica Richiesta
-    </button>
-
-    <p *ngIf="messaggio" class="success-msg">{{ messaggio }}</p>
-  </div>
-
-  <div class="requests-list">
-    <h3>Le tue richieste recenti</h3>
-
-    <div *ngIf="mieRichieste.length === 0" class="empty-state">
-      <p>Non hai ancora pubblicato nessuna richiesta.</p>
-    </div>
-
-    <div *ngFor="let req of mieRichieste" class="request-item">
-      <div class="req-header">
-        <span class="req-id">#{{ req.idRichiesta }}</span>
-        <span class="status-badge" [ngClass]="req.statoRichiesta">
-          {{ req.statoRichiesta }}
-        </span>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">ServizioRapido</div>
+      <div class="user-badge">
+        <div class="user-icon">🏠</div>
+        <div class="user-details">
+          <strong>{{ utente?.nome }} {{ utente?.cognome }}</strong>
+          <span class="user-role">Cliente</span>
+        </div>
       </div>
-      <p class="req-body">{{ req.dettagli }}</p>
     </div>
-  </div>
 
+    <nav class="sidebar-nav">
+      <button
+        class="nav-item"
+        [class.active]="sezioneAttiva === 'nuova'"
+        (click)="cambiaSezione('nuova')">
+        <span class="nav-icon">📢</span>
+        <span class="nav-text">Fai Richiesta</span>
+      </button>
+
+      <button
+        class="nav-item"
+        [class.active]="sezioneAttiva === 'richieste'"
+        (click)="cambiaSezione('richieste')">
+        <span class="nav-icon">📋</span>
+        <span class="nav-text">Le Mie Richieste</span>
+      </button>
+
+      <button
+        class="nav-item"
+        [class.active]="sezioneAttiva === 'profilo'"
+        (click)="cambiaSezione('profilo')">
+        <span class="nav-icon">👤</span>
+        <span class="nav-text">Il Mio Profilo</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout" (click)="logout()">
+        <span>🚪</span> Esci
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <div *ngIf="messaggio" class="alert-message">
+      {{ messaggio }}
+    </div>
+
+    <div *ngIf="sezioneAttiva === 'nuova'" class="content-section">
+      <div class="section-header">
+        <h1>📢 Nuova Richiesta</h1>
+        <p>Descrivi il tuo problema e trova un professionista.</p>
+      </div>
+
+      <div class="create-request-container">
+        <div class="request-form-card">
+
+          <div class="form-group">
+            <label>Categoria Servizio *</label>
+            <select class="form-select-custom" [(ngModel)]="nuovaRichiesta.categoria">
+              <option value="" disabled selected>Seleziona una categoria</option>
+
+              <option value="IDRAULICO">Idraulico</option>
+              <option value="ELETTRICISTA">Elettricista</option>
+              <option value="FABBRO">Fabbro</option>
+
+              <option value="IMBIANCHINO">Imbianchino</option>
+              <option value="MURATORE">Muratore</option>
+              <option value="CARTONGESSISTA">Cartongessista</option>
+              <option value="PAVIMENTISTA">Pavimentista</option>
+              <option value="FALEGNAME">Falegname</option>
+
+              <option value="PULIZIE">Pulizie</option>
+              <option value="DISINFESTAZIONE">Disinfestazione</option>
+
+              <option value="GIARDINAGGIO">Giardinaggio</option>
+
+              <option value="MONTAGGIO_MOBILI">Montaggio Mobili</option>
+              <option value="TRASLOCHI">Traslochi</option>
+              <option value="SGOMBERO">Sgombero</option>
+
+              <option value="INFORMATICA">Informatica</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Indirizzo *</label>
+            <input
+              type="text"
+              [(ngModel)]="nuovaRichiesta.indirizzo"
+              placeholder="Via Roma 10, Milano">
+          </div>
+
+          <div class="form-group">
+            <label>Descrivi il problema *</label>
+            <textarea
+              [(ngModel)]="nuovaRichiesta.dettagli"
+              placeholder="Esempio: Ho bisogno di riparare il rubinetto della cucina..."
+              rows="5"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button
+              class="btn-primary btn-large"
+              (click)="pubblicaRichiesta()"
+              [disabled]="!nuovaRichiesta.dettagli || !nuovaRichiesta.indirizzo || !nuovaRichiesta.categoria">
+              🚀 Pubblica Richiesta
+            </button>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <h3>Come funziona?</h3>
+          <ul>
+            <li>📝 <strong>Descrivi</strong> il problema.</li>
+            <li>👀 <strong>Ricevi</strong> proposte dai professionisti.</li>
+            <li>🤝 <strong>Scegli</strong> la migliore e accetta.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="sezioneAttiva === 'richieste'" class="content-section">
+      <div class="section-header">
+        <h1>📋 Le Mie Richieste</h1>
+        <p>Stato delle tue richieste pubblicate</p>
+      </div>
+
+      <div *ngIf="mieRichieste.length === 0" class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h3>Nessuna richiesta attiva</h3>
+        <p>Vai nella sezione "Fai Richiesta" per iniziare.</p>
+      </div>
+
+      <div class="richieste-list">
+        <div *ngFor="let richiesta of mieRichieste" class="richiesta-card">
+          <div class="richiesta-header">
+            <span class="badge" [ngClass]="{
+              'badge-aperta': richiesta.statoRichiesta === 'APERTA',
+              'badge-lavorazione': richiesta.statoRichiesta === 'IN_LAVORAZIONE',
+              'badge-chiusa': richiesta.statoRichiesta === 'CHIUSA'
+            }">
+              {{ richiesta.statoRichiesta }}
+            </span>
+            <span class="richiesta-id">#{{ richiesta.idRichiesta }}</span>
+          </div>
+
+          <div class="richiesta-body">
+            <p class="richiesta-dettagli">{{ richiesta.dettagli }}</p>
+          </div>
+
+          <div class="richiesta-footer">
+            <button class="btn-secondary-small" (click)="eliminaRichiesta(richiesta.idRichiesta)">
+              🗑️ Elimina
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="sezioneAttiva === 'profilo'" class="content-section">
+      <div class="section-header">
+        <h1>👤 Il Mio Profilo</h1>
+        <p>Informazioni personali</p>
+      </div>
+      <div class="profilo-container">
+        <div class="profilo-card">
+          <div class="profilo-avatar">
+            <div class="avatar-circle">{{ utente?.nome?.charAt(0) }}{{ utente?.cognome?.charAt(0) }}</div>
+          </div>
+          <div class="profilo-info">
+            <h2>{{ utente?.nome }} {{ utente?.cognome }}</h2>
+            <p class="profilo-specializzazione">Cliente</p>
+          </div>
+        </div>
+        <div class="profilo-dettagli">
+          <div class="dettaglio-item">
+            <span class="dettaglio-label">Email</span>
+            <span class="dettaglio-value">{{ utente?.email }}</span>
+          </div>
+          <div class="dettaglio-item">
+            <span class="dettaglio-label">Telefono</span>
+            <span class="dettaglio-value">{{ utente?.telefono || 'Non specificato' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
 </div>
