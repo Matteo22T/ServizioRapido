@@ -492,6 +492,25 @@
   background: #e5e7eb;
 }
 
+.btn-edit-small {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.btn-edit-small:hover {
+  background: #93c5fd;
+  color: #1e3a8a;
+  border-color: #1e40af;
+}
+
 .btn-danger-small {
   background: #fee2e2;
   color: #991b1b;

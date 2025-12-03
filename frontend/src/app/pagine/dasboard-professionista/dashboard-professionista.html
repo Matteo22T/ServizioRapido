@@ -128,6 +128,9 @@
           </div>
 
           <div class="proposta-actions" *ngIf="proposta.statoProposta === 'INVIATA'">
+            <button class="btn-edit-small" (click)="apriModalModifica(proposta)">
+              ✏️ Modifica
+            </button>
             <button class="btn-danger-small" (click)="eliminaProposta(proposta.idProposta)">
               Elimina
             </button>
@@ -220,6 +223,52 @@
         (click)="inviaProposta()"
         [disabled]="!nuovaProposta.dettagli || nuovaProposta.prezzo <= 0">
         Invia Proposta
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal per Modificare Proposta -->
+<div class="modal-overlay" *ngIf="mostraModalModifica" (click)="chiudiModalModifica()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>✏️ Modifica Proposta</h2>
+      <button class="btn-close" (click)="chiudiModalModifica()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="richiesta-preview">
+        <h4>Richiesta di riferimento:</h4>
+        <p>{{ propostaInModifica?.richiestaRiferimento?.dettagli }}</p>
+      </div>
+
+      <div class="form-group">
+        <label>Descrizione proposta *</label>
+        <textarea
+          [(ngModel)]="propostaInModifica.dettagli"
+          rows="4"
+          placeholder="Modifica la descrizione della tua proposta">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Prezzo (€) *</label>
+        <input
+          type="number"
+          [(ngModel)]="propostaInModifica.prezzo"
+          placeholder="0.00"
+          min="0"
+          step="0.01">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="chiudiModalModifica()">Annulla</button>
+      <button
+        class="btn-primary"
+        (click)="modificaProposta()"
+        [disabled]="!propostaInModifica?.dettagli || propostaInModifica?.prezzo <= 0">
+        Salva Modifiche
       </button>
     </div>
   </div>

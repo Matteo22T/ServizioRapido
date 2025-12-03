@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RichiestaService } from '../../service/richiesta-service';
 import { ProposteService } from '../../service/proposte-service';
-import { ChangeDetectorRef } from '@angular/core'; // <--- 1. Importa
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-professionista',
@@ -15,10 +15,9 @@ import { ChangeDetectorRef } from '@angular/core'; // <--- 1. Importa
 })
 export class DashboardProfessionista implements OnInit {
   utente: any;
-  sezioneAttiva: string = 'cerca'; // 'profilo', 'proposte', 'cerca'
+  sezioneAttiva: string = 'cerca';
 
   richiesteAperte: any[] = [];
-
   mieProposte: any[] = [];
 
   // Form per nuova proposta
@@ -30,7 +29,9 @@ export class DashboardProfessionista implements OnInit {
 
   // Modal state
   mostraModalProposta = false;
+  mostraModalModifica = false;
   richiestaSelezionata: any = null;
+  propostaInModifica: any = null;
 
   messaggio = '';
 
@@ -69,7 +70,6 @@ export class DashboardProfessionista implements OnInit {
     this.richiestaService.getAperte(this.utente.id).subscribe({
       next: (data) => {
         this.richiesteAperte = data;
-
         this.cd.detectChanges();
       },
       error: (err) => console.error(err)
@@ -121,6 +121,53 @@ export class DashboardProfessionista implements OnInit {
     });
   }
 
+  apriModalModifica(proposta: any) {
+    if (!proposta || !proposta.idProposta) {
+      console.error('Proposta non valida');
+      this.messaggio = 'Errore: proposta non valida';
+      setTimeout(() => this.messaggio = '', 3000);
+      return;
+    }
+
+    this.propostaInModifica = {
+      idProposta: proposta.idProposta,
+      dettagli: proposta.dettagli || '',
+      prezzo: proposta.prezzo || 0,
+      richiestaRiferimento: proposta.richiestaRiferimento
+    };
+    this.mostraModalModifica = true;
+  }
+
+  chiudiModalModifica() {
+    this.mostraModalModifica = false;
+    this.propostaInModifica = null;
+  }
+
+  modificaProposta() {
+    if (!this.propostaInModifica) {
+      console.error('Nessuna proposta selezionata per la modifica');
+      return;
+    }
+
+    this.proposteService.modifica(
+      this.propostaInModifica.idProposta,
+      this.propostaInModifica.dettagli,
+      this.propostaInModifica.prezzo
+    ).subscribe({
+      next: () => {
+        this.messaggio = 'Proposta modificata con successo!';
+        this.chiudiModalModifica();
+        this.caricaMieProposte();
+        setTimeout(() => this.messaggio = '', 3000);
+      },
+      error: (err) => {
+        console.error(err);
+        this.messaggio = 'Errore nella modifica della proposta';
+        setTimeout(() => this.messaggio = '', 3000);
+      }
+    });
+  }
+
   eliminaProposta(idProposta: number) {
     if (confirm('Sei sicuro di voler eliminare questa proposta?')) {
       this.proposteService.elimina(idProposta).subscribe({
@@ -131,7 +178,6 @@ export class DashboardProfessionista implements OnInit {
         },
         error: (err) => console.error(err)
       });
-
     }
   }
 
