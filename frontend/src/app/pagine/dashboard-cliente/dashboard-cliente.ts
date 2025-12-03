@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RichiestaService } from '../../service/richiesta-service'; // Controlla che il nome del file sia corretto
+import { ChangeDetectorRef } from '@angular/core'; // <--- 1. Importa
+
 
 @Component({
   selector: 'app-dashboard-cliente',
@@ -29,7 +31,8 @@ export class DashboardCliente implements OnInit {
 
   constructor(
     private router: Router,
-    private richiestaService: RichiestaService
+    private richiestaService: RichiestaService,
+  private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -65,6 +68,8 @@ export class DashboardCliente implements OnInit {
     this.richiestaService.getMieRichieste(this.utente.id).subscribe({
       next: (data) => {
         this.mieRichieste = data;
+        this.cd.detectChanges();
+
         console.log('Richieste caricate:', this.mieRichieste);
       },
       error: (err) => {
@@ -97,6 +102,7 @@ export class DashboardCliente implements OnInit {
           dettagli: '',
           indirizzo: '',
           categoria: ''
+
         };
 
         // 4. Aggiorna la lista e cambia sezione
@@ -105,6 +111,8 @@ export class DashboardCliente implements OnInit {
           this.sezioneAttiva = 'richieste';
           this.messaggio = '';
         }, 1500);
+        this.cd.detectChanges();
+
       },
       error: (err) => {
         console.error('Errore durante la pubblicazione:', err);
@@ -118,8 +126,7 @@ export class DashboardCliente implements OnInit {
       this.richiestaService.elimina(idRichiesta).subscribe({
         next: () => {
           this.messaggio = 'Richiesta eliminata.';
-          // Rimuovo localmente l'elemento per aggiornare la vista subito
-          this.mieRichieste = this.mieRichieste.filter(r => r.idRichiesta !== idRichiesta);
+          this.caricaMieRichieste()
 
           setTimeout(() => this.messaggio = '', 3000);
         },

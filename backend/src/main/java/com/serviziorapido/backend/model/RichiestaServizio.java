@@ -32,7 +32,8 @@ public class RichiestaServizio {
     @JsonIgnore
     private PropostaServizio propostaAccettata;
 
-    @OneToMany(mappedBy = "richiestaRiferimento")
+    @OneToMany(mappedBy = "richiestaRiferimento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PropostaServizio> proposteRicevute;
 
     // --- GETTER E SETTER ---
