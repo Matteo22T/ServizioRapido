@@ -6,6 +6,7 @@ import { RichiestaService } from '../../service/richiesta-service';
 import { ProposteService } from '../../service/proposte-service';
 import { ChangeDetectorRef } from '@angular/core';
 
+import { NotificaService } from '../../service/notifica-service';
 @Component({
   selector: 'app-dashboard-professionista',
   standalone: true,
@@ -19,6 +20,9 @@ export class DashboardProfessionista implements OnInit {
 
   richiesteAperte: any[] = [];
   mieProposte: any[] = [];
+
+  listaNotifiche: any[] = [];
+  conteggioBadge: number = 0;
 
   // Form per nuova proposta
   nuovaProposta = {
@@ -38,6 +42,7 @@ export class DashboardProfessionista implements OnInit {
   constructor(
     private richiestaService: RichiestaService,
     private proposteService: ProposteService,
+    private notificaService: NotificaService,
     private router: Router,
     private cd: ChangeDetectorRef
   ) {}
@@ -55,6 +60,7 @@ export class DashboardProfessionista implements OnInit {
       } else {
         this.caricaRichiesteAperte();
         this.caricaMieProposte();
+        this.caricaNotifiche();
       }
     } else {
       this.router.navigate(['/login']);
@@ -64,6 +70,32 @@ export class DashboardProfessionista implements OnInit {
   cambiaSezione(sezione: string) {
     this.sezioneAttiva = sezione;
     this.messaggio = '';
+    if (sezione === 'notifiche') {
+      this.conteggioBadge = 0;
+      this.caricaNotifiche();
+    }
+  }
+
+  //LOGICA NOTIFICHE
+  caricaNotifiche() {
+    if (!this.utente?.id) return;
+    this.notificaService.getNotifichePerUtente(this.utente.id).subscribe({
+      next: (data) => {
+        this.listaNotifiche = data;
+        this.listaNotifiche.reverse();
+
+        if (this.sezioneAttiva !== 'notifiche') {
+          this.conteggioBadge = this.listaNotifiche.length;
+        } else {
+          this.conteggioBadge = 0; // Sicurezza extra
+        }
+        this.cd.detectChanges();
+        console.log('Notifiche caricate:', this.listaNotifiche);
+      },
+      error: (err) => {
+        console.error('Errore nel caricamento delle notifiche:', err);
+      }
+    });
   }
 
   caricaRichiesteAperte() {

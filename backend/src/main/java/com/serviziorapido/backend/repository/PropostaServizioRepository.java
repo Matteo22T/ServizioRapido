@@ -9,4 +9,6 @@ public interface PropostaServizioRepository extends JpaRepository<PropostaServiz
     List<PropostaServizio> findByRichiestaRiferimento_IdRichiesta(Long idRichiesta);
 
     List<PropostaServizio> findByProfessionistaMittente_IdUtente(Long idProfessionista);
+
+    List<PropostaServizio> findByRichiestaRiferimento_IdRichiestaAndProfessionistaMittente_IdUtente(Long idRichiesta, Long idProfessionista);
 }

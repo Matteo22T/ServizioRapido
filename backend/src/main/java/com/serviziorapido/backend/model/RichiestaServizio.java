@@ -60,4 +60,11 @@ public class RichiestaServizio {
 
     public PropostaServizio getPropostaAccettata() { return propostaAccettata; }
     public void setPropostaAccettata(PropostaServizio propostaAccettata) { this.propostaAccettata = propostaAccettata; }
+
+    public List<PropostaServizio> getProposteRicevute() {
+        return proposteRicevute;
+    }
+    public void setProposteRicevute(List<PropostaServizio> proposteRicevute) {
+        this.proposteRicevute = proposteRicevute;
+    }
 }

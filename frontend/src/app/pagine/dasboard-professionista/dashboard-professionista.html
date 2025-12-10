@@ -30,6 +30,19 @@
         <span class="nav-text">Le Mie Proposte</span>
       </button>
 
+      <button class="nav-item"
+              [class.active]="sezioneAttiva === 'notifiche'"
+              (click)="cambiaSezione('notifiche')">
+
+        <div class="icon-wrapper">
+          <span class="nav-icon">🔔</span>
+
+          <span *ngIf="conteggioBadge > 0" class="badge-counter">!</span>
+        </div>
+
+        <span class="nav-text">Notifiche</span>
+      </button>
+
       <button
         class="nav-item"
         [class.active]="sezioneAttiva === 'profilo'"
@@ -139,6 +152,41 @@
       </div>
     </div>
 
+    <!-- SEZIONE: Notifiche -->
+    <div *ngIf="sezioneAttiva === 'notifiche'" class="content-section">
+
+      <div class="section-header">
+        <h1>🔔 I tuoi avvisi</h1>
+        <p>Qui trovi gli aggiornamenti sulle tue proposte.</p>
+      </div>
+
+      <div *ngIf="listaNotifiche.length === 0" class="empty-state">
+        <div style="font-size: 3rem;">🔕</div>
+        <h3>Nessuna nuova notifica</h3>
+      </div>
+
+      <div class="richieste-list">
+        <div *ngFor="let notifica of listaNotifiche"
+             class="richiesta-card"
+             [ngClass]="{
+                'border-win': notifica.messaggio.includes('Congratulazioni') || notifica.messaggio.includes('accettato'),
+                'border-lose': notifica.messaggio.includes('rifiutata') || notifica.messaggio.includes('scelto un altro') || notifica.messaggio.includes('scartata')
+             }">
+
+          <div class="richiesta-body">
+            <p style="font-size: 1.1em; color: #333; margin-bottom: 5px; font-weight: 500;">
+              {{ notifica.messaggio }}
+            </p>
+
+            <div style="font-size: 0.85rem; color: #666; display: flex; justify-content: space-between;">
+              <span>Rif. Richiesta #{{ notifica.richiestaId || '?' }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
     <!-- SEZIONE: Profilo -->
     <div *ngIf="sezioneAttiva === 'profilo'" class="content-section">
       <div class="section-header">

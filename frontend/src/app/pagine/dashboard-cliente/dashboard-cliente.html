@@ -31,11 +31,28 @@
 
       <button
         class="nav-item"
+        [class.active]="sezioneAttiva === 'notifiche'"
+        (click)="cambiaSezione('notifiche')">
+
+        <div class="icon-wrapper">
+          <span class="nav-icon">🔔</span>
+
+          <span *ngIf="conteggioBadge > 0" class="badge-counter">
+            !
+          </span>
+        </div>
+
+        <span class="nav-text">Notifiche</span>
+      </button>
+      <button
+        class="nav-item"
         [class.active]="sezioneAttiva === 'profilo'"
         (click)="cambiaSezione('profilo')">
         <span class="nav-icon">👤</span>
         <span class="nav-text">Il Mio Profilo</span>
       </button>
+
+
     </nav>
 
     <div class="sidebar-footer">
@@ -155,6 +172,12 @@
           </div>
 
           <div class="richiesta-footer">
+            <button *ngIf="richiesta.statoRichiesta === 'APERTA'"
+                    style="padding: 6px 15px; font-size: 0.9rem;"
+                    (click)="apriModalProposte(richiesta.idRichiesta)">
+              📩 Vedi Proposte
+            </button>
+
             <button class="btn-secondary-small" (click)="eliminaRichiesta(richiesta.idRichiesta)">
               🗑️ Elimina
             </button>
@@ -162,6 +185,56 @@
         </div>
       </div>
     </div>
+
+    <div *ngIf="sezioneAttiva === 'notifiche'" class="content-section">
+
+      <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h1>🔔 Notifiche</h1>
+          <p>Controlla se ci sono novità</p>
+        </div>
+
+      </div>
+
+      <div *ngIf="listaNotifiche.length === 0" class="empty-state">
+        <div class="empty-icon">🔕</div>
+        <h3>Nessuna notifica</h3>
+        <p>Clicca sul bottone in alto per aggiornare.</p>
+      </div>
+
+      <div class="richieste-list">
+        <div *ngFor="let notifica of listaNotifiche" class="richiesta-card" style="border-left: 5px solid #007bff;">
+
+          <div class="richiesta-header">
+             <span class="badge" [ngClass]="{
+                'badge-aperta': notifica.statoNotifica === 'INVIATO',
+                'badge-lavorazione': notifica.statoNotifica === 'DA_INVIARE',
+                'badge-chiusa': notifica.statoNotifica === 'FALLITO'
+             }">
+                {{ notifica.statoNotifica }}
+             </span>
+
+            <span class="richiesta-id">Notifica #{{ notifica.idNotifica }}</span>
+          </div>
+
+          <div class="richiesta-body">
+            <p class="richiesta-dettagli" style="font-size: 1.1em; font-weight: 500;">
+              {{ notifica.messaggio }}
+            </p>
+          </div>
+          <div class="card-actions">
+
+            <button class="btn-action btn-view" title="Vedi Dettagli" (click)="azioneDettagli(notifica)">
+              👁️
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
 
     <div *ngIf="sezioneAttiva === 'profilo'" class="content-section">
       <div class="section-header">
@@ -190,6 +263,53 @@
         </div>
       </div>
     </div>
+
+    <div class="modal-overlay" *ngIf="modalAperto">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h2>Proposte Ricevute</h2>
+          <button class="btn-close" (click)="chiudiModal()">×</button>
+        </div>
+
+        <div class="modal-body">
+
+          <div *ngIf="listaProposte.length === 0" class="empty-state" style="padding: 2rem;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">📭</div>
+            <p>Nessun professionista si è ancora candidato per questa richiesta.</p>
+          </div>
+
+          <div *ngFor="let p of listaProposte" class="proposta-card">
+
+            <div class="proposta-info">
+              <div style="display: flex; flex-direction: column;">
+                <h4 style="margin: 0; font-size: 1.1rem; color: #333;">
+                  {{ p.professionistaMittente.nome }} {{ p.professionistaMittente.cognome }}
+                </h4>
+                <small style="color: #666; font-size: 0.85rem;">
+                  {{ p.professionistaMittente.specializzazione || 'Professionista' }}
+                </small>
+              </div>
+
+              <span class="prezzo" style="font-size: 1.2rem; color: #2563eb; font-weight: bold;">
+                € {{ p.prezzo }}
+            </span>
+            </div>
+
+            <div style="background: #f9fafb; padding: 10px; border-radius: 6px; margin: 10px 0; color: #555;">
+              {{ p.dettagli }}
+            </div>
+            <div class="proposta-actions">
+              <button class="btn-reject" (click)="rifiuta(p.idProposta)">Rifiuta</button>
+              <button class="btn-accept" (click)="accetta(p.idProposta)">Accetta Preventivo</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
   </main>
 </div>

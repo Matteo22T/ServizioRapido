@@ -24,6 +24,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
@@ -452,6 +453,29 @@
   font-size: 1rem;
 }
 
+/* BORDI COLORATI */
+
+/* Vittoria (Verde) */
+.border-win {
+  border-left: 5px solid #28a745 !important;
+  background-color: #f0fff4; /* Sfondo verdino chiaro */
+}
+
+/* Sconfitta (Rosso) */
+.border-lose {
+  border-left: 5px solid #dc3545 !important;
+  background-color: #fff5f5; /* Sfondo rossino chiaro */
+}
+
+/* Base generica (se non avevi già questa classe) */
+.richiesta-card {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border-left: 5px solid #ccc; /* Grigio default */
+}
 /* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, #2563eb, #1e40af);
@@ -691,4 +715,34 @@
     flex-direction: column;
     text-align: center;
   }
+}
+
+.icon-wrapper {
+  position: relative; /* <--- QUESTO è il trucco: blocca il badge qui dentro */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-counter {
+  position: absolute;
+  /* Gioca con questi due valori per spostarlo millimetricamente */
+  top: -5px;
+  right: -5px;
+
+  background-color: #ff3b30;
+  color: white;
+  border-radius: 50%;
+  width: 16px;       /* Un po' più piccolo è più elegante */
+  height: 16px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #ffffff; /* Bordo bianco per staccare */
+  z-index: 10; /* Assicura che stia sopra la campanella */
 }

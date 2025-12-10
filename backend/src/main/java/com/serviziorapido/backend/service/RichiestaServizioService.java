@@ -5,6 +5,7 @@ import com.serviziorapido.backend.repository.RichiestaServizioRepository;
 import com.serviziorapido.backend.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,10 @@ public class RichiestaServizioService {
 
     @Autowired
     private UtenteRepository utenteRepo;
+
+    // 1. INIETTA IL NOTIFICA SERVICE
+    @Autowired
+    private NotificaService notificaService;
 
     public RichiestaServizio creaRichiesta(RichiestaServizio richiesta){
 
@@ -47,7 +52,18 @@ public class RichiestaServizioService {
         return richiestaRepo.findByClientePubblicante_IdUtente(idCliente);
     }
 
-    public void annullaRichiesta(Long idRichiesta){
+    @Transactional //atomicità dell'operazione
+    public void annullaRichiesta(Long idRichiesta) {
+        RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta)
+                .orElseThrow(() -> new RuntimeException("Richiesta non trovata con ID: " + idRichiesta));
+        if (richiesta.getProposteRicevute() != null && !richiesta.getProposteRicevute().isEmpty()) {
+            for (PropostaServizio proposta : richiesta.getProposteRicevute()) {
+                Long idProfessionista = proposta.getProfessionistaMittente().getIdUtente();
+                String messaggio = "La richiesta '" + richiesta.getDettagli() +
+                        "' per cui avevi inviato una proposta è stata annullata dal cliente.";
+                notificaService.inviaNotifica(idProfessionista, messaggio);
+            }
+        }
         richiestaRepo.deleteById(idRichiesta);
     }
 
