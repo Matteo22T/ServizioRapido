@@ -1,6 +1,6 @@
 package com.serviziorapido.backend.dto;
 
-import com.serviziorapido.backend.model.CategoriaRichiesta;
+import com.serviziorapido.backend.entity.CategoriaRichiesta;
 
 public class ProfessionistaDTO extends UtenteDTO {
     private String biografia;

@@ -1,6 +1,6 @@
 package com.serviziorapido.backend.dto;
 
-import com.serviziorapido.backend.model.StatoNotifica;
+import com.serviziorapido.backend.entity.StatoNotifica;
 
 public class NotificaDTO {
     private Long idNotifica;

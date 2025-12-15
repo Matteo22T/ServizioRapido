@@ -15,7 +15,7 @@ export class RichiestaService {
     const body = {
       dettagli: dettagli,
       indirizzo: indirizzo,
-      categoria: categoria, // Deve essere una stringa MAIUSCOLA come l'Enum Java (es. "IDRAULICO")
+      categoria: categoria,
       clientePubblicante: {
         idUtente: idCliente
       }
@@ -35,6 +35,12 @@ export class RichiestaService {
 
   elimina(idRichiesta: number): Observable<any>{
     return this.http.delete(`${this.url}/eliminate/${idRichiesta}`, { responseType: 'text' });
+  }
+
+
+  completa(idRichiesta: number): Observable<any>{
+
+    return this.http.put(`${this.url}/completa/${idRichiesta}`, {});
   }
 
 

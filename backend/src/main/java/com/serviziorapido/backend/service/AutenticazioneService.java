@@ -1,6 +1,6 @@
 package com.serviziorapido.backend.service;
 
-import com.serviziorapido.backend.model.*;
+import com.serviziorapido.backend.entity.*;
 import com.serviziorapido.backend.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

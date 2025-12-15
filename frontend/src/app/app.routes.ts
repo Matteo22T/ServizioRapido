@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 // Importiamo i componenti delle pagine che hai creato
-import { HomeComponent } from './pagine/home/home';
-import { LoginComponent } from './pagine/login/login';
-import { RegisterComponent } from './pagine/register/register';
-import { DashboardCliente } from './pagine/dashboard-cliente/dashboard-cliente';
-import { PasswordDimenticata } from './pagine/password-dimenticata/password-dimenticata'
-import {ResetPassword} from './pagine/reset-password/reset-password';
-import { DashboardProfessionista} from './pagine/dasboard-professionista/dashboard-professionista';
+import { HomeComponent } from './components/home/home';
+import { LoginComponent } from './components/login/login';
+import { RegisterComponent } from './components/register/register';
+import { DashboardCliente } from './components/dashboard-cliente/dashboard-cliente';
+import { PasswordDimenticata } from './components/password-dimenticata/password-dimenticata'
+import {ResetPassword} from './components/reset-password/reset-password';
+import { DashboardProfessionista} from './components/dasboard-professionista/dashboard-professionista';
 
 export const routes: Routes = [
   // Quando l'URL è vuoto (http://localhost:4200/), mostra la Home

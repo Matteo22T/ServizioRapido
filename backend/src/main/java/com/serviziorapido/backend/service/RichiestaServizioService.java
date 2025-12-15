@@ -1,6 +1,8 @@
 package com.serviziorapido.backend.service;
 
-import com.serviziorapido.backend.model.*;
+import com.serviziorapido.backend.entity.*;
+import com.serviziorapido.backend.event.TipoEventoRichiesta;
+import com.serviziorapido.backend.observer_pattern.Subject;
 import com.serviziorapido.backend.repository.RichiestaServizioRepository;
 import com.serviziorapido.backend.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class RichiestaServizioService {
+public class RichiestaServizioService extends Subject {
 
     @Autowired
     private RichiestaServizioRepository richiestaRepo;
@@ -45,8 +47,11 @@ public class RichiestaServizioService {
         CategoriaRichiesta specializzazione = prof.getSpecializzazione();
 
         // 3. Cerco nel DB solo le richieste APERTE + IDRAULICO
-        return richiestaRepo.findByStatoRichiestaAndCategoria(StatoRichiesta.APERTA, specializzazione);
-    }
+        return richiestaRepo.findByStatoRichiestaAndCategoria(
+                StatoRichiesta.APERTA,
+                specializzazione,
+                idProfessionista
+        );    }
 
     public List<RichiestaServizio> getRichiesteDelCliente(Long idCliente) {
         return richiestaRepo.findByClientePubblicante_IdUtente(idCliente);
@@ -56,15 +61,22 @@ public class RichiestaServizioService {
     public void annullaRichiesta(Long idRichiesta) {
         RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta)
                 .orElseThrow(() -> new RuntimeException("Richiesta non trovata con ID: " + idRichiesta));
-        if (richiesta.getProposteRicevute() != null && !richiesta.getProposteRicevute().isEmpty()) {
-            for (PropostaServizio proposta : richiesta.getProposteRicevute()) {
-                Long idProfessionista = proposta.getProfessionistaMittente().getIdUtente();
-                String messaggio = "La richiesta '" + richiesta.getDettagli() +
-                        "' per cui avevi inviato una proposta è stata annullata dal cliente.";
-                notificaService.inviaNotifica(idProfessionista, messaggio);
-            }
-        }
+
+        notifyObservers(richiesta, TipoEventoRichiesta.ANNULLATA);
+
         richiestaRepo.deleteById(idRichiesta);
     }
 
+    public RichiestaServizio completaRichiesta(Long idRichiesta) {
+        RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta)
+                .orElseThrow(() -> new RuntimeException("Richiesta non trovata"));
+
+        // Controllo di sicurezza: possiamo completare solo se era in lavorazione
+        if (richiesta.getStatoRichiesta() != StatoRichiesta.IN_LAVORAZIONE) {
+            throw new RuntimeException("Impossibile completare: la richiesta non è in lavorazione.");
+        }
+
+        richiesta.setStatoRichiesta(StatoRichiesta.COMPLETATA);
+        return richiestaRepo.save(richiesta);
+    }
 }

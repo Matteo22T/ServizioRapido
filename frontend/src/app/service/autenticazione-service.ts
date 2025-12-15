@@ -21,15 +21,11 @@ export class AutenticazioneService {
     return this.http.post(this.urlLogin, body);
   }
 
-  // Qui specifichiamo che ci aspettiamo un oggetto di tipo Cliente
-  registerCliente(cliente: Cliente): Observable<any> {
-    return this.http.post(`${this.urlRegister}/cliente`, cliente);
+  register(datiRegistrazione: any): Observable<any> {
+    return this.http.post(`${this.urlRegister}`, datiRegistrazione, { responseType: 'text' });
   }
 
-  // Qui specifichiamo che ci aspettiamo un oggetto di tipo Professionista
-  registerProfessionista(professionista: Professionista): Observable<any> {
-    return this.http.post(`${this.urlRegister}/professionista`, professionista);
-  }
+
 
   richiediReset(email: string): Observable<any> {
     return this.http.post(`${this.urlLogin}/recupero-password`, { email }, { responseType: 'text' });

@@ -1,7 +1,7 @@
 package com.serviziorapido.backend.controller;
 
 import com.serviziorapido.backend.dto.NotificaDTO;
-import com.serviziorapido.backend.model.Notifica;
+import com.serviziorapido.backend.entity.Notifica;
 import com.serviziorapido.backend.service.NotificaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

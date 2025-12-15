@@ -1,6 +1,6 @@
 package com.serviziorapido.backend.repository;
 
-import com.serviziorapido.backend.model.Notifica;
+import com.serviziorapido.backend.entity.Notifica;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

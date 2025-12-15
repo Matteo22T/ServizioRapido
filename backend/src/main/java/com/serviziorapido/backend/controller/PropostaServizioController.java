@@ -1,6 +1,6 @@
 package com.serviziorapido.backend.controller;
 
-import com.serviziorapido.backend.model.PropostaServizio;
+import com.serviziorapido.backend.entity.PropostaServizio;
 import com.serviziorapido.backend.service.PropostaServizioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

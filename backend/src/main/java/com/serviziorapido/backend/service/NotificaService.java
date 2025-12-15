@@ -1,6 +1,6 @@
 package com.serviziorapido.backend.service;
-import com.serviziorapido.backend.model.Notifica;
-import com.serviziorapido.backend.model.StatoNotifica;
+import com.serviziorapido.backend.entity.Notifica;
+import com.serviziorapido.backend.entity.StatoNotifica;
 import com.serviziorapido.backend.repository.NotificaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

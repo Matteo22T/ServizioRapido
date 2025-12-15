@@ -1,7 +1,10 @@
-package com.serviziorapido.backend.model;
+package com.serviziorapido.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.util.List;
 
 @Entity
@@ -18,9 +21,11 @@ public class RichiestaServizio {
     private String indirizzo;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM) // <--- AGGIUNGI QUESTO
     private CategoriaRichiesta categoria;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM) // <--- AGGIUNGI QUESTO
     private StatoRichiesta statoRichiesta;
 
     @ManyToOne

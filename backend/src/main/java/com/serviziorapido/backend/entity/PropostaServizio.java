@@ -1,6 +1,9 @@
-package com.serviziorapido.backend.model;
+package com.serviziorapido.backend.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -17,6 +20,7 @@ public class PropostaServizio {
     private BigDecimal prezzo;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM) // <--- AGGIUNGI QUESTO!
     private StatoProposta statoProposta;
 
     @ManyToOne

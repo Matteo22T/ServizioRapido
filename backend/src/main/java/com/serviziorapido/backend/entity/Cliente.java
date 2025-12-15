@@ -1,4 +1,4 @@
-package com.serviziorapido.backend.model;
+package com.serviziorapido.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

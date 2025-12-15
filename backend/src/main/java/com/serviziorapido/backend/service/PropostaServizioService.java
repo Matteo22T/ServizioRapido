@@ -1,139 +1,141 @@
 package com.serviziorapido.backend.service;
 
-import com.serviziorapido.backend.model.PropostaServizio;
-import com.serviziorapido.backend.model.RichiestaServizio;
-import com.serviziorapido.backend.model.StatoProposta;
-import com.serviziorapido.backend.model.StatoRichiesta;
+import com.serviziorapido.backend.entity.*;
+import com.serviziorapido.backend.event.TipoEventoProposta;
+import com.serviziorapido.backend.observer_pattern.Observer;
+import com.serviziorapido.backend.observer_pattern.Subject;
 import com.serviziorapido.backend.repository.PropostaServizioRepository;
 import com.serviziorapido.backend.repository.RichiestaServizioRepository;
+import com.serviziorapido.backend.repository.UtenteRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tools.jackson.databind.annotation.JsonAppend;
 
 import java.util.List;
 
 @Service
-public class PropostaServizioService {
+public class PropostaServizioService extends Subject {
 
     @Autowired
     private PropostaServizioRepository propostaRepo;
     @Autowired
     private RichiestaServizioRepository richiestaRepo;
+
     @Autowired
-    private NotificaService notificaService;
+    private UtenteRepository utenteRepo;
 
+    @Autowired
+    private List<Observer> listaOsservatoriDisponibili;
 
-
-    public PropostaServizio pubblicaProposta(PropostaServizio proposta){
-        Long idRichiesta = proposta.getRichiestaRiferimento().getIdRichiesta();
-        Long idProfessionista = proposta.getProfessionistaMittente().getIdUtente();
-
-        // 2. CONTROLLO DUPLICATI: Chiami il metodo che abbiamo creato nel Repository
-        List<PropostaServizio> propostePrecedenti = propostaRepo.findByRichiestaRiferimento_IdRichiestaAndProfessionistaMittente_IdUtente(idRichiesta, idProfessionista);
-        for (PropostaServizio p : propostePrecedenti) {
-            if (p.getStatoProposta() == StatoProposta.INVIATA || p.getStatoProposta() == StatoProposta.ACCETTATA) {
-                // Se ne trovi anche solo una attiva, blocchi tutto
-                throw new RuntimeException("HAI_GIA_PROPOSTO");
-            }
+    @PostConstruct
+    public void init() {
+          for (Observer obs : listaOsservatoriDisponibili) {
+            this.attach(obs);
         }
-        RichiestaServizio richiestaReale= richiestaRepo.findById(proposta.getRichiestaRiferimento().getIdRichiesta()). //funziona a pipeline
-                orElseThrow(() -> new RuntimeException("Richiesta non trovata"));
-
-        if (richiestaReale.getStatoRichiesta() != StatoRichiesta.APERTA) { //LANCIO ECCEZIONE SE LO STATO DELLA RICHIESTA NON E' APERTA
-            throw new RuntimeException("Non puoi inviare una proposta: la richiesta non è APERTA.");
-        }
-        proposta.setStatoProposta(StatoProposta.INVIATA); // altrimenti setto lo stato della proposta ad inviata
-        PropostaServizio nuovaProposta = propostaRepo.save(proposta);
-        String nomeProf = proposta.getProfessionistaMittente().getNome();
-        String cognomeProf = proposta.getProfessionistaMittente().getCognome();
-        Long idCliente = proposta.getRichiestaRiferimento().getClientePubblicante().getIdUtente();
-        String messaggio = "Il professionista " + nomeProf + " " + cognomeProf +
-                " ha inviato una proposta per la tua richiesta: " +
-                richiestaReale.getDettagli();
-        notificaService.inviaNotifica(idCliente, messaggio);
-        return nuovaProposta;
     }
 
 
-    public PropostaServizio modificaProposta(Long idProposta,PropostaServizio nuovaDatiProposta){
-        PropostaServizio proposta = propostaRepo.findById(idProposta).get();
+
+    public PropostaServizio pubblicaProposta(PropostaServizio proposta) {
+        RichiestaServizio richiesta = richiestaRepo.findById(proposta.getRichiestaRiferimento().getIdRichiesta())
+                .orElseThrow(() -> new RuntimeException("Richiesta non trovata"));
+
+
+
+
+        proposta.setStatoProposta(StatoProposta.INVIATA);
+        PropostaServizio nuovaProposta = propostaRepo.save(proposta);
+
+        proposta.setRichiestaRiferimento(richiesta);
+
+        notifyObservers(nuovaProposta, TipoEventoProposta.INVIATA);
+
+        return nuovaProposta;
+    }
+
+    public PropostaServizio modificaProposta(Long idProposta, PropostaServizio nuovaDatiProposta) {
+        PropostaServizio proposta = propostaRepo.findById(idProposta)
+                .orElseThrow(() -> new RuntimeException("Proposta non trovata"));
+
         if (proposta.getStatoProposta() != StatoProposta.INVIATA) {
-            throw new RuntimeException("Proposta non modificabile");
+            throw new RuntimeException("Impossibile modificare: la proposta non è in stato INVIATA.");
         }
+
         proposta.setDettagli(nuovaDatiProposta.getDettagli());
         proposta.setPrezzo(nuovaDatiProposta.getPrezzo());
-        PropostaServizio aggiornata = propostaRepo.save(proposta);
-        String nomeProf = proposta.getProfessionistaMittente().getNome();
-        String cognomeProf = proposta.getProfessionistaMittente().getCognome();
-        Long idCliente = proposta.getRichiestaRiferimento().getClientePubblicante().getIdUtente();
-        String messaggio = "La proposta per la richiesta '" + proposta.getRichiestaRiferimento().getDettagli() + "' è stata modificata "+ "dal professionista "+ nomeProf + " " + cognomeProf;
-        notificaService.inviaNotifica(idCliente, messaggio);
-        return aggiornata;
+
+        PropostaServizio propostaAggiornata = propostaRepo.save(proposta);
+
+         notifyObservers(propostaAggiornata, TipoEventoProposta.MODIFICATA);
+
+        return propostaAggiornata;
     }
 
     @Transactional
     public void eliminaProposta(Long idProposta) {
-        // Recuperiamo la proposta PRIMA di cancellarla per sapere chi notificare
         PropostaServizio proposta = propostaRepo.findById(idProposta)
                 .orElseThrow(() -> new RuntimeException("Proposta non trovata"));
-        Long idCliente = proposta.getRichiestaRiferimento().getClientePubblicante().getIdUtente();
-        String nomeProf = proposta.getProfessionistaMittente().getNome();
-        String cognomeProf = proposta.getProfessionistaMittente().getCognome();
-        String messaggio = "Il professionista " + nomeProf+ " "+ cognomeProf+ "ha ritirato la proposta per la richiesta: " + proposta.getRichiestaRiferimento().getDettagli();
-        notificaService.inviaNotifica(idCliente, messaggio);
+
+        // NOTA: Qui notifico PRIMA di cancellare, altrimenti l'observer non ha i dati
+        // per costruire il messaggio (es. il nome del professionista)
+        notifyObservers(proposta, TipoEventoProposta.ELIMINATA);
 
         propostaRepo.deleteById(idProposta);
     }
 
     public List<PropostaServizio> getProposteProfessionista(Long idProfessionista) {
-        return propostaRepo.findByProfessionistaMittente_IdUtente(idProfessionista);
-     }
+        return propostaRepo.findByProfessionistaMittente_IdUtente(idProfessionista, StatoRichiesta.COMPLETATA);     }
 
     public List<PropostaServizio> getPropostePerRichiesta(Long idRichiesta){
         return propostaRepo.findByRichiestaRiferimento_IdRichiesta(idRichiesta);
     }
 
     @Transactional
-    public PropostaServizio accettaProposta(Long idProposta, Long idRichiesta){
-        PropostaServizio propostaScelta = propostaRepo.findById(idProposta).get();
-        RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta).get();
+    public PropostaServizio accettaProposta(Long idProposta, Long idRichiesta) {
+        PropostaServizio propostaScelta = propostaRepo.findById(idProposta)
+                .orElseThrow(() -> new RuntimeException("Proposta non trovata"));
+        RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta)
+                .orElseThrow(() -> new RuntimeException("Richiesta non trovata"));
+
         richiesta.setStatoRichiesta(StatoRichiesta.IN_LAVORAZIONE);
         propostaScelta.setStatoProposta(StatoProposta.ACCETTATA);
         richiesta.setPropostaAccettata(propostaScelta);
 
-        // 2. Rifiuto automatico delle altre proposte
+        // Gestione proposte scartate
         List<PropostaServizio> tutteLeProposte = propostaRepo.findByRichiestaRiferimento_IdRichiesta(idRichiesta);
         for (PropostaServizio p : tutteLeProposte) {
             if (!p.getIdProposta().equals(idProposta)) {
                 p.setStatoProposta(StatoProposta.RIFIUTATA);
                 propostaRepo.save(p);
-                //Notifica anche agli scartati.
-                Long idProfScartato = p.getProfessionistaMittente().getIdUtente();
-                String messaggioScartato = "La tua proposta per la richiesta '" + richiesta.getDettagli() +
-                        "' non è stata accettata. Il cliente ha assegnato il lavoro a un altro professionista.";
-
-                notificaService.inviaNotifica(idProfScartato, messaggioScartato);
+                // Notifica SCARTATA
+                notifyObservers(p, TipoEventoProposta.SCARTATA);
             }
         }
+
         richiestaRepo.save(richiesta);
         PropostaServizio salvata = propostaRepo.save(propostaScelta);
 
-        Long idProf = propostaScelta.getProfessionistaMittente().getIdUtente();
-        String messaggio = "Congratulazioni! La tua proposta per '" + richiesta.getDettagli() + "' è stata ACCETTATA.";
-        notificaService.inviaNotifica(idProf, messaggio);
+        // Notifica ACCETTATA
+        notifyObservers(salvata, TipoEventoProposta.ACCETTATA);
+
         return salvata;
     }
 
-    public PropostaServizio rifiutaProposta(Long idProposta){
-        PropostaServizio proposta = propostaRepo.findById(idProposta).get();
+    public PropostaServizio rifiutaProposta(Long idProposta) {
+        // 1. Recupero la proposta
+        PropostaServizio proposta = propostaRepo.findById(idProposta)
+                .orElseThrow(() -> new RuntimeException("Proposta non trovata"));
+
+        // 2. Cambio lo stato
         proposta.setStatoProposta(StatoProposta.RIFIUTATA);
-        PropostaServizio salvata = propostaRepo.save(proposta);
 
-        Long idProf = proposta.getProfessionistaMittente().getIdUtente();
-        String messaggio = "La tua proposta per la richiesta '" + proposta.getRichiestaRiferimento().getDettagli() + "' è stata rifiutata.";
-        notificaService.inviaNotifica(idProf, messaggio);
+        // 3. Salvo su Database
+        PropostaServizio propostaRifiutata = propostaRepo.save(proposta);
 
-        return salvata;
+        // 4. NOTIFY: Avviso gli observer (il professionista saprà di essere stato rifiutato)
+        notifyObservers(propostaRifiutata, TipoEventoProposta.RIFIUTATA);
+
+        return propostaRifiutata;
     }
 }

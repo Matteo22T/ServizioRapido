@@ -94,7 +94,7 @@ export class DashboardCliente implements OnInit {
         if (this.sezioneAttiva !== 'notifiche') {
           this.conteggioBadge = this.listaNotifiche.length;
         } else {
-          this.conteggioBadge = 0; // Sicurezza extra
+          this.conteggioBadge = 0;
         }
         this.cd.detectChanges();
         console.log('Notifiche caricate:', this.listaNotifiche);
@@ -135,6 +135,18 @@ export class DashboardCliente implements OnInit {
     this.richiestaSelezionataId = null;
   }
 
+  usaMioIndirizzo() {
+    if (this.utente?.indirizzo) {
+      this.nuovaRichiesta.indirizzo = this.utente.indirizzo;
+      this.messaggio = 'Indirizzo caricato dal tuo profilo! 📍';
+      setTimeout(() => this.messaggio = '', 2000);
+    } else {
+      this.messaggio = 'Nessun indirizzo salvato nel tuo profilo.';
+      setTimeout(() => this.messaggio = '', 3000);
+    }
+  }
+
+
   accetta(idProposta: number) {
     if (!this.richiestaSelezionataId) return;
 
@@ -161,6 +173,7 @@ export class DashboardCliente implements OnInit {
         next: () => {
           // Rimuovi la proposta dalla lista visiva senza chiudere la modale
           this.listaProposte = this.listaProposte.filter(p => p.idProposta !== idProposta);
+          this.cd.detectChanges()
         },
         error: (err) => {
           console.error(err);
@@ -246,6 +259,22 @@ export class DashboardCliente implements OnInit {
       });
     }
   }
+
+  completaLavoro(idRichiesta: number) {
+    if (confirm("Confermi che il lavoro è stato svolto e vuoi chiudere la richiesta?")) {
+      this.richiestaService.completa(idRichiesta).subscribe({
+        next: () => {
+          this.messaggio = "Ottimo! Richiesta completata e archiviata. 🎉";
+          this.caricaMieRichieste();
+          this.cd.detectChanges();
+          setTimeout(() => this.messaggio = '', 4000);
+        },
+        error: (err) => {
+          console.error(err);
+          this.messaggio = "Errore durante il completamento della richiesta.";
+        }
+      });
+    }}
 
   logout() {
     localStorage.removeItem('currentUser');

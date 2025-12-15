@@ -74,21 +74,66 @@
         <p>Trova nuove opportunità di lavoro</p>
       </div>
 
-      <div *ngIf="richiesteAperte.length === 0" class="empty-state">
+      <!-- Filtri per città -->
+      <div class="filtri-container" *ngIf="cittaDisponibili.length > 0">
+        <div class="filtro-gruppo">
+          <label>🏘️ Filtra per città:</label>
+          <div class="filtro-controls">
+            <select
+              [(ngModel)]="cittaSelezionata"
+              (ngModelChange)="filtraPerCitta()"
+              class="filtro-select">
+              <option value="">Tutte le città</option>
+              <option *ngFor="let citta of cittaDisponibili" [value]="citta">
+                {{ citta }}
+              </option>
+            </select>
+            <button
+              *ngIf="cittaSelezionata"
+              class="btn-reset-filtro"
+              (click)="resetFiltro()">
+              ✕ Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Contatore risultati -->
+        <div class="risultati-info">
+          <span class="risultati-count">
+            {{ richiesteAperteFiltrate.length }} richieste
+            <span *ngIf="cittaSelezionata">a {{ cittaSelezionata }}</span>
+            <span *ngIf="!cittaSelezionata">totali</span>
+          </span>
+        </div>
+      </div>
+
+      <div *ngIf="richiesteAperteFiltrate.length === 0 && richiesteAperte.length === 0" class="empty-state">
         <div class="empty-icon">📭</div>
         <h3>Nessuna richiesta disponibile</h3>
         <p>Al momento non ci sono richieste aperte. Torna più tardi!</p>
       </div>
 
+      <div *ngIf="richiesteAperteFiltrate.length === 0 && richiesteAperte.length > 0" class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>Nessuna richiesta trovata</h3>
+        <p>Non ci sono richieste per la città selezionata. Prova con un'altra città!</p>
+      </div>
+
       <div class="richieste-grid">
-        <div *ngFor="let richiesta of richiesteAperte" class="richiesta-card">
+        <div *ngFor="let richiesta of richiesteAperteFiltrate" class="richiesta-card">
           <div class="card-header">
             <span class="badge badge-open">APERTA</span>
-            <span class="richiesta-id">#{{ richiesta.idRichiesta }}</span>
           </div>
 
           <div class="card-body">
             <p class="richiesta-dettagli">{{ richiesta.dettagli }}</p>
+
+            <!-- AGGIUNTA: Visualizzazione indirizzo -->
+            <div class="richiesta-indirizzo" *ngIf="richiesta.indirizzo">
+              <span class="indirizzo-icon">📍</span>
+              <span class="indirizzo-text">{{ richiesta.indirizzo }}</span>
+            </div>
+
             <div class="richiesta-meta">
               <span class="meta-item">
                 <strong>Cliente:</strong> {{ richiesta.clientePubblicante?.nome }}
@@ -135,18 +180,35 @@
 
           <div class="proposta-body">
             <p class="proposta-dettagli">{{ proposta.dettagli }}</p>
-            <div class="proposta-info">
-              <span>Richiesta #{{ proposta.richiestaRiferimento?.idRichiesta }}</span>
+
+            <div class="proposta-richiesta-info">
+
+              <div class="richiesta-indirizzo" *ngIf="proposta.richiestaRiferimento?.indirizzo">
+                <span class="indirizzo-icon">📍</span>
+                <span class="indirizzo-text">{{ proposta.richiestaRiferimento.indirizzo }}</span>
+              </div>
+
+              <button class="btn-link" (click)="apriDettaglioRichiesta(proposta.richiestaRiferimento)">
+                👁️ Vedi Dettagli Richiesta
+              </button>
             </div>
           </div>
 
-          <div class="proposta-actions" *ngIf="proposta.statoProposta === 'INVIATA'">
-            <button class="btn-edit-small" (click)="apriModalModifica(proposta)">
+          <div class="proposta-actions" *ngIf="proposta.statoProposta === 'INVIATA' || proposta.statoProposta === 'RIFIUTATA'">
+
+            <button
+              *ngIf="proposta.statoProposta === 'INVIATA'"
+              class="btn-edit-small"
+              (click)="apriModalModifica(proposta)">
               ✏️ Modifica
             </button>
-            <button class="btn-danger-small" (click)="eliminaProposta(proposta.idProposta)">
-              Elimina
+
+            <button
+              class="btn-danger-small"
+              (click)="eliminaProposta(proposta.idProposta)">
+              🗑️ Elimina
             </button>
+
           </div>
         </div>
       </div>
@@ -177,10 +239,6 @@
             <p style="font-size: 1.1em; color: #333; margin-bottom: 5px; font-weight: 500;">
               {{ notifica.messaggio }}
             </p>
-
-            <div style="font-size: 0.85rem; color: #666; display: flex; justify-content: space-between;">
-              <span>Rif. Richiesta #{{ notifica.richiestaId || '?' }}</span>
-            </div>
           </div>
 
         </div>
@@ -242,6 +300,12 @@
       <div class="richiesta-preview">
         <h4>Richiesta del cliente:</h4>
         <p>{{ richiestaSelezionata?.dettagli }}</p>
+
+        <!-- AGGIUNTA: Mostra anche l'indirizzo nel modal -->
+        <div class="richiesta-indirizzo" *ngIf="richiestaSelezionata?.indirizzo">
+          <span class="indirizzo-icon">📍</span>
+          <span class="indirizzo-text">{{ richiestaSelezionata.indirizzo }}</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -288,6 +352,12 @@
       <div class="richiesta-preview">
         <h4>Richiesta di riferimento:</h4>
         <p>{{ propostaInModifica?.richiestaRiferimento?.dettagli }}</p>
+
+        <!-- AGGIUNTA: Indirizzo anche nel modal di modifica -->
+        <div class="richiesta-indirizzo" *ngIf="propostaInModifica?.richiestaRiferimento?.indirizzo">
+          <span class="indirizzo-icon">📍</span>
+          <span class="indirizzo-text">{{ propostaInModifica.richiestaRiferimento.indirizzo }}</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -318,6 +388,34 @@
         [disabled]="!propostaInModifica?.dettagli || propostaInModifica?.prezzo <= 0">
         Salva Modifiche
       </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostraModalDettaglioRichiesta" (click)="chiudiDettaglioRichiesta()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>📄 Dettagli Richiesta #{{ richiestaDaVisualizzare?.idRichiesta }}</h2>
+      <button class="btn-close" (click)="chiudiDettaglioRichiesta()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="richiesta-meta" style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+        <p><strong>Cliente:</strong> {{ richiestaDaVisualizzare?.clientePubblicante?.nome }} {{ richiestaDaVisualizzare?.clientePubblicante?.cognome }}</p>
+        <p><strong>Categoria:</strong> <span class="badge">{{ richiestaDaVisualizzare?.categoria }}</span></p>
+        <p *ngIf="richiestaDaVisualizzare?.indirizzo"><strong>Indirizzo:</strong> 📍 {{ richiestaDaVisualizzare?.indirizzo }}</p>
+      </div>
+
+      <div class="form-group">
+        <label>Cosa ha chiesto il cliente:</label>
+        <div class="readonly-box">
+          {{ richiestaDaVisualizzare?.dettagli }}
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="chiudiDettaglioRichiesta()">Chiudi</button>
     </div>
   </div>
 </div>

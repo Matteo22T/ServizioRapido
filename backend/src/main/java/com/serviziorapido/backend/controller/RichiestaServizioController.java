@@ -1,6 +1,6 @@
 package com.serviziorapido.backend.controller;
 
-import com.serviziorapido.backend.model.RichiestaServizio;
+import com.serviziorapido.backend.entity.RichiestaServizio;
 import com.serviziorapido.backend.service.RichiestaServizioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +39,15 @@ public class RichiestaServizioController {
             return ResponseEntity.ok("Richiesta eliminata con successo");
         }
         catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/completa/{id}")
+    public ResponseEntity<?> completaRichiesta(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(richiestaService.completaRichiesta(id));
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

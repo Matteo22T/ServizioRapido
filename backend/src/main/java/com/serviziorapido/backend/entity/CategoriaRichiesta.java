@@ -1,4 +1,4 @@
-package com.serviziorapido.backend.model;
+package com.serviziorapido.backend.entity;
 
 public enum CategoriaRichiesta {
     // 1. Manutenzione

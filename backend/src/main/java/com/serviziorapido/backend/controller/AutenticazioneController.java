@@ -2,7 +2,9 @@ package com.serviziorapido.backend.controller;
 
 import com.serviziorapido.backend.dto.ClienteDTO;
 import com.serviziorapido.backend.dto.ProfessionistaDTO;
-import com.serviziorapido.backend.model.*;
+import com.serviziorapido.backend.dto.RegisterDTO;
+import com.serviziorapido.backend.entity.*;
+import com.serviziorapido.backend.factory.UtenteFactory;
 import com.serviziorapido.backend.service.AutenticazioneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class AutenticazioneController {
 
     @Autowired
     private AutenticazioneService authService;
+
+    @Autowired
+    private Map<String, UtenteFactory> factoryMap;
 
     @PostMapping("/login")
     public ResponseEntity<?> autenticaUtente(@RequestBody Map<String, String> payload) {
@@ -39,25 +44,26 @@ public class AutenticazioneController {
         return ResponseEntity.status(500).body("Tipo utente sconosciuto");
     }
 
-    @PostMapping("/register/cliente")
-    public ResponseEntity<?> registraCliente(@RequestBody Cliente cliente) {
+    @PostMapping("/register")
+    public ResponseEntity<?> registraCliente(@RequestBody RegisterDTO registerDTO) {
         try {
-            Utente salvato = authService.registraUtente(cliente);
-            return ResponseEntity.ok(convertiInClienteDTO((Cliente) salvato));
-        } catch (Exception e) {
+            UtenteFactory factory = factoryMap.get(registerDTO.getTipoProfilo());
+            if (factory == null) {
+                return ResponseEntity.badRequest().body("Tipo profilo non supportato: " + registerDTO.getTipoProfilo());
+            }
+
+            Utente nuovoUtente = factory.creaUtente(registerDTO);
+
+            Utente salvato = authService.registraUtente(nuovoUtente);
+
+            return ResponseEntity.ok("Registrazione avvenuta con successo per: " + salvato.getEmail());        }
+        catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PostMapping("/register/professionista")
-    public ResponseEntity<?> registraProfessionista(@RequestBody Professionista professionista) {
-        try {
-            Utente salvato = authService.registraUtente(professionista);
-            return ResponseEntity.ok(convertiInProfessionistaDTO((Professionista) salvato));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+
+
 
     @PostMapping("/login/recupero-password")
     public ResponseEntity<?> richiediReset(@RequestBody Map<String, String> payload) {

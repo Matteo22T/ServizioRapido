@@ -24,7 +24,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
@@ -310,72 +309,502 @@
   color: #166534;
 }
 
-.badge-inviata {
+.badge-aperta {
   background: #dbeafe;
   color: #1e40af;
 }
 
-.badge-accettata {
+.badge-inLavorazione {
   background: #dcfce7;
   color: #166534;
 }
 
-.badge-rifiutata {
+.badge-completata {
   background: #fee2e2;
   color: #991b1b;
 }
 
-/* Proposte List */
-.proposte-list {
+
+/* --- LAYOUT GENERALE --- */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+/* --- SIDEBAR (Uguale al professionista) --- */
+.sidebar {
+  width: 280px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.sidebar-header {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.user-icon {
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: #bfdbfe;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Navigazione */
+.sidebar-nav {
+  flex: 1;
+  padding: 1.5rem 0;
+}
+
+.nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-item:hover, .nav-item.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.nav-item.active {
+  font-weight: 600;
+  border-left: 4px solid white;
+}
+
+.sidebar-footer {
+  padding: 1.5rem;
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fecaca;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: 0.3s;
+}
+
+.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.4);
+  color: white;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end; /* Allinea a destra */
+  gap: 10px; /* Spazio tra i bottoni */
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.btn-action {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%; /* Rotondi */
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-action:hover {
+  transform: scale(1.1); /* Si ingrandisce un po' */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Stili specifici per colore */
+.btn-accept {
+  background-color: #dcfce7;
+  color: #166534; /* Verde */
+  border: 1px solid #bbf7d0;
+}
+
+.btn-reject {
+  background-color: #fee2e2;
+  color: #991b1b; /* Rosso */
+  border: 1px solid #fecaca;
+}
+
+.btn-view {
+  background-color: #eff6ff;
+  color: #1e40af; /* Blu */
+  border: 1px solid #bfdbfe;
+}
+
+/* --- MAIN CONTENT --- */
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  padding: 2rem;
+}
+
+.alert-message {
+  background: #dcfce7;
+  color: #166534;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border-left: 4px solid #22c55e;
+}
+
+.section-header h1 {
+  font-size: 2rem;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.section-header p {
+  color: #6b7280;
+}
+
+/* --- FORM CREAZIONE RICHIESTA (NUOVO) --- */
+.create-request-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.request-form-card {
+  flex: 2;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.info-box {
+  flex: 1;
+  background: #eff6ff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  color: #1e40af;
+}
+
+.info-box ul {
+  padding-left: 1.2rem;
+  line-height: 1.8;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+
+textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #764ba2;
+  background: #fdfbff;
+}
+
+.hint-text {
+  display: block;
+  margin-top: 0.5rem;
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.btn-large {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+/* --- LISTA RICHIESTE --- */
+.richieste-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.proposta-card {
+.richiesta-card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   overflow: hidden;
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #764ba2; /* Viola per i clienti */
 }
 
-.proposta-header {
-  padding: 1rem 1.25rem;
+.richiesta-header {
+  padding: 1rem 1.5rem;
   background: #f9fafb;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #f3f4f6;
 }
 
-.proposta-prezzo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #10b981;
-  margin-left: 1rem;
-}
-
-.proposta-body {
-  padding: 1.25rem;
-}
-
-.proposta-dettagli {
+.richiesta-body {
+  padding: 1.5rem;
   color: #374151;
-  line-height: 1.6;
-  margin: 0 0 1rem 0;
+  line-height: 1.5;
 }
 
-.proposta-info {
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-
-.proposta-actions {
-  padding: 1rem 1.25rem;
+.richiesta-footer {
+  padding: 1rem 1.5rem;
   background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #f3f4f6;
+  text-align: right;
+}
+
+/* Wrapper necessario per il posizionamento "absolute" del badge */
+.icon-wrapper {
+  position: relative; /* <--- QUESTO è il trucco: blocca il badge qui dentro */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-counter {
+  position: absolute;
+  /* Gioca con questi due valori per spostarlo millimetricamente */
+  top: -5px;
+  right: -5px;
+
+  background-color: #ff3b30;
+  color: white;
+  border-radius: 50%;
+  width: 16px;       /* Un po' più piccolo è più elegante */
+  height: 16px;
+
+  font-size: 11px;
+  font-weight: 800;
+
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #ffffff; /* Bordo bianco per staccare */
+  z-index: 10; /* Assicura che stia sopra la campanella */
+}
+
+
+/* Stili per il gruppo input indirizzo */
+.indirizzo-input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.indirizzo-input-group input {
+  flex: 1;
+}
+
+.btn-usa-indirizzo {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #1976d2;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-usa-indirizzo:hover:not(:disabled) {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-usa-indirizzo:disabled {
+  background: #f5f5f5;
+  color: #9e9e9e;
+  border-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+/* Stili per mostrare l'indirizzo nelle richieste */
+.richiesta-indirizzo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.indirizzo-icon {
+  color: #1976d2;
+}
+
+.indirizzo-text {
+  color: #666;
+  font-style: italic;
+}
+
+
+/* Badge stati */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.badge-aperta { background: #dcfce7; color: #166534; }
+.badge-lavorazione { background: #dbeafe; color: #1e40af; }
+.badge-chiusa { background: #fee2e2; color: #991b1b; }
+
+/* Bottoni */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.btn-primary:hover:not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary-small {
+  background: white;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-secondary-small:hover {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+/* --- PROFILO (Preservato) --- */
+.profilo-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #764ba2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.profilo-dettagli {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.dettaglio-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.dettaglio-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { width: 100%; position: relative; height: auto; }
+  .main-content { margin-left: 0; padding: 1rem; }
+  .create-request-container { flex-direction: column; }
 }
 
 /* Profilo Container */
@@ -453,29 +882,6 @@
   font-size: 1rem;
 }
 
-/* BORDI COLORATI */
-
-/* Vittoria (Verde) */
-.border-win {
-  border-left: 5px solid #28a745 !important;
-  background-color: #f0fff4; /* Sfondo verdino chiaro */
-}
-
-/* Sconfitta (Rosso) */
-.border-lose {
-  border-left: 5px solid #dc3545 !important;
-  background-color: #fff5f5; /* Sfondo rossino chiaro */
-}
-
-/* Base generica (se non avevi già questa classe) */
-.richiesta-card {
-  background: white;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  border-left: 5px solid #ccc; /* Grigio default */
-}
 /* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, #2563eb, #1e40af);
@@ -514,25 +920,6 @@
 
 .btn-secondary:hover {
   background: #e5e7eb;
-}
-
-.btn-edit-small {
-  background: #dbeafe;
-  color: #1e40af;
-  border: 1px solid #93c5fd;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-  flex: 1;
-}
-
-.btn-edit-small:hover {
-  background: #93c5fd;
-  color: #1e3a8a;
-  border-color: #1e40af;
 }
 
 .btn-danger-small {
@@ -717,32 +1104,69 @@
   }
 }
 
-.icon-wrapper {
-  position: relative; /* <--- QUESTO è il trucco: blocca il badge qui dentro */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+
+.badge-completata {
+  background: #e5e7eb;
+  color: #374151;
+  border: 1px solid #9ca3af;
 }
 
-.badge-counter {
-  position: absolute;
-  /* Gioca con questi due valori per spostarlo millimetricamente */
-  top: -5px;
-  right: -5px;
+.btn-success-small {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  margin-right: 5px; /* Spazio tra i bottoni */
+}
 
-  background-color: #ff3b30;
+.btn-success-small:hover {
+  background: #22c55e;
   color: white;
-  border-radius: 50%;
-  width: 16px;       /* Un po' più piccolo è più elegante */
-  height: 16px;
+  border-color: #16a34a;
+}
 
-  font-size: 11px;
-  font-weight: 800;
-
+/* Contenitore del gruppo: distanzia e allinea */
+.form-group {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; /* Mette la label sopra la select */
+  margin-bottom: 20px;    /* Spazio sotto il campo */
+  font-family: sans-serif; /* Font leggibile */
+}
 
-  border: 2px solid #ffffff; /* Bordo bianco per staccare */
-  z-index: 10; /* Assicura che stia sopra la campanella */
+/* Stile della Label */
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;       /* Grassetto leggero */
+  color: #333;            /* Grigio scuro per contrasto */
+  margin-bottom: 8px;     /* Spazio tra label e select */
+}
+
+/* Stile della Select Box */
+.form-select-custom {
+  width: 100%;            /* Occupa tutto lo spazio disponibile */
+  padding: 10px 12px;     /* Spaziatura interna comoda */
+  font-size: 16px;        /* Dimensione testo (evita zoom su iPhone) */
+  color: #444;
+  background-color: #fff;
+  border: 1px solid #ccc; /* Bordo grigio sottile */
+  border-radius: 6px;     /* Angoli arrotondati */
+  cursor: pointer;        /* Cambia il cursore al passaggio del mouse */
+  transition: all 0.3s ease; /* Transizione morbida per l'effetto focus */
+
+}
+
+.form-select-custom:focus {
+  outline: none;          /* Rimuove il bordo blu standard brutto */
+  border-color: #007bff;  /* Colore del bordo attivo (blu) */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); /* Leggero alone blu */
+}
+
+/* Stile per le option (funziona solo su alcuni browser/OS) */
+.form-select-custom option {
+  padding: 10px;
 }
