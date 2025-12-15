@@ -57,7 +57,7 @@ public class RichiestaServizioService extends Subject {
         return richiestaRepo.findByClientePubblicante_IdUtente(idCliente);
     }
 
-    @Transactional //atomicità dell'operazione
+    @Transactional
     public void annullaRichiesta(Long idRichiesta) {
         RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta)
                 .orElseThrow(() -> new RuntimeException("Richiesta non trovata con ID: " + idRichiesta));

@@ -22,7 +22,7 @@ public class ProfessionistaFactory implements UtenteFactory {
         // Set dati specifici
         prof.setBiografia(dto.getBiografia());
 
-        // Conversione Enum sicura
+        // Conversione Enum
         if (dto.getSpecializzazione() != null) {
             try {
                 prof.setSpecializzazione(CategoriaRichiesta.valueOf(dto.getSpecializzazione()));

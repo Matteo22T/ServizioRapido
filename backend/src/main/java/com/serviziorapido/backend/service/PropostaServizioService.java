@@ -22,8 +22,6 @@ public class PropostaServizioService extends Subject {
     @Autowired
     private RichiestaServizioRepository richiestaRepo;
 
-    @Autowired
-    private UtenteRepository utenteRepo;
 
     @Autowired
     private List<Observer> listaOsservatoriDisponibili;
