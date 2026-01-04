@@ -15,11 +15,7 @@ public interface RichiestaServizioRepository extends JpaRepository<RichiestaServ
 
     List<RichiestaServizio> findByClientePubblicante_IdUtente(Long idCliente);
 
-    // --- NUOVO METODO FILTRATO ---
-    // Seleziona le richieste che:
-    // 1. Hanno lo stato specificato (APERTA)
-    // 2. Hanno la categoria specificata
-    // 3. Il cui ID NON è presente nella lista delle proposte fatte da QUESTO professionista
+
     @Query("SELECT r FROM RichiestaServizio r WHERE " +
             "r.statoRichiesta = :stato " +
             "AND r.categoria = :categoria " +

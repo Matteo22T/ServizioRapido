@@ -14,19 +14,19 @@ public enum CategoriaRichiesta {
     FALEGNAME,
 
     // 3. Pulizia
-    PULIZIE, // Comprende domestiche, vetri, tessuti
+    PULIZIE,
     DISINFESTAZIONE,
 
     // 4. Giardinaggio
-    GIARDINAGGIO, // Comprende potatura, progettazione
+    GIARDINAGGIO,
 
     // 5. Traslochi
     MONTAGGIO_MOBILI,
-    TRASLOCHI, // Piccoli traslochi
+    TRASLOCHI,
     SGOMBERO,
 
     // 6. Tecnologia
-    INFORMATICA, // PC, Reti
+    INFORMATICA,
 
 
 }

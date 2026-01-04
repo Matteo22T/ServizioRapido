@@ -8,7 +8,6 @@ public class UtenteDTO {
     private String telefono;
     private String ruolo; // "CLIENTE" o "PROFESSIONISTA"
 
-    // Costruttore vuoto e con campi
     public UtenteDTO() {}
 
     public UtenteDTO(Long id, String nome, String cognome, String email, String telefono, String ruolo) {
@@ -20,7 +19,6 @@ public class UtenteDTO {
         this.ruolo = ruolo;
     }
 
-    // Getter e Setter (generali con IDE)
     public Long getId() { return idUtente; }
     public void setId(Long id) { this.idUtente = id; }
     public String getNome() { return nome; }

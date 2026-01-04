@@ -32,7 +32,6 @@ public class NotificaController {
         for (Notifica entity : notificheEntity) {
             NotificaDTO dto = new NotificaDTO();
 
-            // Copio i dati semplici
             dto.setIdNotifica(entity.getIdNotifica());
             dto.setMessaggio(entity.getMessaggio());
             dto.setDestinatarioId(entity.getDestinatarioId());

@@ -7,9 +7,9 @@ import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-password-dimenticata',
   standalone: true,
-  imports: [FormsModule, RouterLink], // Aggiungi RouterLink qui
+  imports: [FormsModule, RouterLink],
   templateUrl: './password-dimenticata.html',
-  styleUrls: ['./password-dimenticata.css'] // Riutilizza lo stile del login o creane uno
+  styleUrls: ['./password-dimenticata.css']
 })
 export class PasswordDimenticata {
   email = '';

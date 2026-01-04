@@ -21,20 +21,16 @@ public class Notifica {
     @Column(name = "destinatario", nullable = false)
     private Long destinatarioId;
 
-    // --- Costruttori ---
 
-    // Costruttore di Default (obbligatorio per JPA)
     public Notifica() {
     }
 
-    // Costruttore con parametri (utile per creare oggetti rapidamente)
     public Notifica(String messaggio, StatoNotifica statoInvio, Long destinatarioId) {
         this.messaggio = messaggio;
         this.statoNotifica = statoInvio;
         this.destinatarioId = destinatarioId;
     }
 
-    // --- Getter e Setter ---
 
     public Long getIdNotifica() {
         return idNotifica;

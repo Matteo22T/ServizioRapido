@@ -8,7 +8,7 @@ import { AutenticazioneService } from '../../service/autenticazione-service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink], // Aggiungi RouterLink agli import se usi il link "Registrati qui"
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -24,13 +24,12 @@ export class LoginComponent {
 
   constructor(private authService: AutenticazioneService, private router: Router) {}
 
-  // typescript
   login() {
     console.log('login start', { email: this.email, hasPassword: !!this.password });
     this.authService.login(this.email, this.password).subscribe({
       next: (res: any) => {
         console.log('login response raw:', res);
-        const user = res?.user ?? res; // supporta sia { user: {...} } che {...}
+        const user = res?.user ?? res;
         if (!user) {
           console.error('Nessun utente nella response');
           this.errore = 'Errore server: response vuota';
@@ -47,7 +46,6 @@ export class LoginComponent {
       },
       error: (err) => {
         console.error('login error:', err);
-        // Mostra messaggio più utile se presente nel payload
         this.errore = err?.error?.message ?? err?.message ?? 'Credenziali errate o utente non trovato';
       }
     });

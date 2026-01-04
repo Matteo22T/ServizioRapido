@@ -1,7 +1,6 @@
 package com.serviziorapido.backend.dto;
 
 public class RegisterDTO {
-    // Campi comuni
     private String nome;
     private String cognome;
     private String email;
@@ -16,7 +15,6 @@ public class RegisterDTO {
     private String biografia;
     private String specializzazione; // Riceviamo la stringa dell'Enum
 
-    // Costruttore vuoto, Getters e Setters
     public RegisterDTO() {}
 
     public String getNome() { return nome; }

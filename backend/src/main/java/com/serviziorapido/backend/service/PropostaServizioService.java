@@ -77,9 +77,7 @@ public class PropostaServizioService extends Subject {
         PropostaServizio proposta = propostaRepo.findById(idProposta)
                 .orElseThrow(() -> new RuntimeException("Proposta non trovata"));
 
-        // NOTA: Qui notifico PRIMA di cancellare, altrimenti l'observer non ha i dati
-        // per costruire il messaggio (es. il nome del professionista)
-        notifyObservers(proposta, TipoEventoProposta.ELIMINATA);
+            notifyObservers(proposta, TipoEventoProposta.ELIMINATA);
 
         propostaRepo.deleteById(idProposta);
     }
@@ -102,13 +100,11 @@ public class PropostaServizioService extends Subject {
         propostaScelta.setStatoProposta(StatoProposta.ACCETTATA);
         richiesta.setPropostaAccettata(propostaScelta);
 
-        // Gestione proposte scartate
         List<PropostaServizio> tutteLeProposte = propostaRepo.findByRichiestaRiferimento_IdRichiesta(idRichiesta);
         for (PropostaServizio p : tutteLeProposte) {
             if (!p.getIdProposta().equals(idProposta)) {
                 p.setStatoProposta(StatoProposta.RIFIUTATA);
                 propostaRepo.save(p);
-                // Notifica SCARTATA
                 notifyObservers(p, TipoEventoProposta.SCARTATA);
             }
         }
@@ -116,7 +112,6 @@ public class PropostaServizioService extends Subject {
         richiestaRepo.save(richiesta);
         PropostaServizio salvata = propostaRepo.save(propostaScelta);
 
-        // Notifica ACCETTATA
         notifyObservers(salvata, TipoEventoProposta.ACCETTATA);
 
         return salvata;

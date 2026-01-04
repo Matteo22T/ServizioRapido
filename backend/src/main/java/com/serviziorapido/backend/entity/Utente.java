@@ -25,14 +25,12 @@ public abstract class Utente {
     private String resetToken;
     private LocalDateTime resetTokenScadenza;
 
-    // Getters e Setters per i nuovi campi
     public String getResetToken() { return resetToken; }
     public void setResetToken(String resetToken) { this.resetToken = resetToken; }
 
     public LocalDateTime getResetTokenScadenza() { return resetTokenScadenza; }
     public void setResetTokenScadenza(LocalDateTime resetTokenScadenza) { this.resetTokenScadenza = resetTokenScadenza; }
 
-    // Getters e Setters
     public Long getIdUtente() { return idUtente; }
     public void setIdUtente(Long idUtente) { this.idUtente = idUtente; }
 

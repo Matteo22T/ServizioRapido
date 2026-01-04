@@ -20,24 +20,21 @@ export class DashboardProfessionista implements OnInit {
   sezioneAttiva: string = 'cerca';
 
   richiesteAperte: any[] = [];
-  richiesteAperteFiltrate: any[] = []; // Lista filtrata
+  richiesteAperteFiltrate: any[] = [];
   mieProposte: any[] = [];
 
   listaNotifiche: any[] = [];
   conteggioBadge: number = 0;
 
-  // Filtro per città
   cittaDisponibili: string[] = [];
   cittaSelezionata: string = '';
 
-  // Form per nuova proposta
   nuovaProposta = {
     dettagli: '',
     prezzo: 0,
     idRichiesta: 0
   };
 
-  // Modal state
   mostraModalProposta = false;
   mostraModalModifica = false;
   richiestaSelezionata: any = null;
@@ -95,7 +92,7 @@ export class DashboardProfessionista implements OnInit {
         if (this.sezioneAttiva !== 'notifiche') {
           this.conteggioBadge = this.listaNotifiche.length;
         } else {
-          this.conteggioBadge = 0; // Sicurezza extra
+          this.conteggioBadge = 0;
         }
         this.cd.detectChanges();
         console.log('Notifiche caricate:', this.listaNotifiche);
@@ -116,7 +113,6 @@ export class DashboardProfessionista implements OnInit {
     return indirizzo.trim();
   }
 
-  // Aggiorna la lista delle città disponibili
   aggiornaCittaDisponibili() {
     const cittaSet = new Set<string>();
 
@@ -132,7 +128,6 @@ export class DashboardProfessionista implements OnInit {
     this.cittaDisponibili = Array.from(cittaSet).sort();
   }
 
-  // Filtra le richieste per città
   filtraPerCitta() {
     if (!this.cittaSelezionata) {
       this.richiesteAperteFiltrate = [...this.richiesteAperte];
@@ -145,7 +140,6 @@ export class DashboardProfessionista implements OnInit {
     }
   }
 
-  // Reset del filtro
   resetFiltro() {
     this.cittaSelezionata = '';
     this.filtraPerCitta();
@@ -155,7 +149,7 @@ export class DashboardProfessionista implements OnInit {
     this.richiestaService.getAperte(this.utente.id).subscribe({
       next: (data) => {
         this.richiesteAperte = data;
-        this.richiesteAperteFiltrate = [...data]; // Inizialmente mostra tutte
+        this.richiesteAperteFiltrate = [...data];
         this.aggiornaCittaDisponibili();
         this.cd.detectChanges();
       },
@@ -273,7 +267,6 @@ export class DashboardProfessionista implements OnInit {
     }
   }
 
-  // Metodo per aprire il modal di dettaglio
   apriDettaglioRichiesta(richiesta: any) {
     if (!richiesta) {
       console.error("Nessuna richiesta collegata trovata");
@@ -283,7 +276,6 @@ export class DashboardProfessionista implements OnInit {
     this.mostraModalDettaglioRichiesta = true;
   }
 
-  // Metodo per chiudere il modal
   chiudiDettaglioRichiesta() {
     this.mostraModalDettaglioRichiesta = false;
     this.richiestaDaVisualizzare = null;

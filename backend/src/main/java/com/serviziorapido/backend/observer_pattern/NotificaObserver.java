@@ -63,7 +63,6 @@ public class NotificaObserver implements Observer {
 
     public void update(RichiestaServizio richiesta, TipoEventoRichiesta tipo) {
         if (tipo == TipoEventoRichiesta.ANNULLATA) {
-            // 1. Notifica all'utente che ha creato la richiesta (Cliente)
             Long idUtente = richiesta.getClientePubblicante().getIdUtente();
             String messaggioCliente = "Hai annullato con successo la richiesta: " + richiesta.getDettagli();
             notificaService.inviaNotifica(idUtente, messaggioCliente);

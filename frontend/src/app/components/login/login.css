@@ -215,7 +215,6 @@ input:focus::placeholder {
   transform: none;
 }
 
-/* Assicura che il testo sia sopra il pseudo-elemento */
 .btn-primary * {
   position: relative;
   z-index: 1;
@@ -299,7 +298,6 @@ input:focus::placeholder {
   color: var(--primary-dark);
 }
 
-/* Divider (optional - per "Or continue with" sections) */
 .divider {
   display: flex;
   align-items: center;

@@ -21,7 +21,7 @@ export class RegisterComponent {
     cognome: '',
     email: '',
     password: '',
-    telefono: '', // Aggiunto se presente nel DTO backend
+    telefono: '',
     indirizzo: '',
     specializzazione: '',
     biografia: ''
@@ -53,7 +53,6 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error(err);
-        // Gestione errore più dettagliata se il backend manda messaggi specifici
         this.messaggio = err.error || 'Errore durante la registrazione. Controlla i dati.';
       }
     });

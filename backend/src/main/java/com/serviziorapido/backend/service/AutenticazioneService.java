@@ -3,6 +3,8 @@ package com.serviziorapido.backend.service;
 import com.serviziorapido.backend.entity.*;
 import com.serviziorapido.backend.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -16,6 +18,8 @@ public class AutenticazioneService {
 
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
 
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Autowired
     private UtenteRepository utenteRepo;
@@ -39,12 +43,10 @@ public class AutenticazioneService {
             throw new RuntimeException("Formato email non valido!");
         }
 
-        // 2. Controllo requisiti Password
         if (utente.getPassword() == null || !Pattern.matches(PASSWORD_PATTERN, utente.getPassword())) {
             throw new RuntimeException("La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale (@#$%^&+=!).");
         }
 
-        // 3. Controllo duplicati
         if (utenteRepo.existsByEmail(utente.getEmail())) {
             throw new RuntimeException("Email già registrata!");
         }
@@ -57,48 +59,55 @@ public class AutenticazioneService {
         Optional<Utente> utenteOpt = utenteRepo.findByEmail(email);
 
         if (utenteOpt.isEmpty()) {
-            // Per sicurezza non diciamo se l'email non esiste, ma qui logghiamo
             System.out.println("Tentativo di recupero per email inesistente: " + email);
             return;
         }
 
         Utente utente = utenteOpt.get();
 
-        // Generiamo un token univoco
         String token = UUID.randomUUID().toString();
         utente.setResetToken(token);
-        // Il token vale 1 ora
         utente.setResetTokenScadenza(LocalDateTime.now().plusHours(1));
 
         utenteRepo.save(utente);
 
-        // SIMULAZIONE INVIO EMAIL (Guarda la console di IntelliJ!)
-        System.out.println("------------------------------------------------");
-        System.out.println("SIMULAZIONE EMAIL A: " + email);
-        System.out.println("Ciao, clicca qui per resettare la password:");
-        System.out.println("http://localhost:4200/reset-password?token=" + token);
-        System.out.println("------------------------------------------------");
+        SimpleMailMessage message = getSimpleMailMessage(email, token, utente);
+
+        try {
+            mailSender.send(message);
+            System.out.println("Email di recupero inviata con successo a: " + email);
+        } catch (Exception e) {
+            System.err.println("Errore durante l'invio della mail: " + e.getMessage());
+        }
     }
 
-    // STEP 2: L'utente invia la nuova password col token
-    public boolean completaRecuperoPassword(String token, String nuovaPassword) {
-        // Cerca l'utente col token (dovresti aggiungere findByResetToken nel repo, o farlo a mano)
-        // Per semplicità qui facciamo una scansione veloce o aggiungi il metodo nel Repo
-        // Opzione migliore: Aggiungi Optional<Utente> findByResetToken(String token) nel Repository
+    private static SimpleMailMessage getSimpleMailMessage(String email, String token, Utente utente) {
+        String linkReset = "http://localhost:4200/reset-password?token=" + token;
 
-        // Supponiamo tu abbia aggiunto il metodo nel repository (vedi sotto)
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("ServizioRapido <webproject.unical@gmail.com>");
+        message.setTo(email);
+        message.setSubject("Reset Password - ServizioRapido");
+        message.setText("Ciao " + utente.getNome() + ",\n\n" +
+                "Hai richiesto il reset della password. Clicca sul link sottostante per procedere:\n\n" +
+                linkReset + "\n\n" +
+                "Il link scadrà tra 1 ora.\n" +
+                "Se non sei stato tu, ignora questa email.");
+        return message;
+    }
+
+    public boolean completaRecuperoPassword(String token, String nuovaPassword) {
+
         Optional<Utente> utenteOpt = utenteRepo.findByResetToken(token);
 
         if (utenteOpt.isEmpty()) return false;
 
         Utente utente = utenteOpt.get();
 
-        // Controllo scadenza
         if (utente.getResetTokenScadenza().isBefore(LocalDateTime.now())) {
-            return false; // Token scaduto
+            return false;
         }
 
-        // Aggiorno password e pulisco il token
         verificaInformazioni(utente);
         utente.setPassword(nuovaPassword);
         utente.setResetToken(null);

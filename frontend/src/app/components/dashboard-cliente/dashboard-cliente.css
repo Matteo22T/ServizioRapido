@@ -1,11 +1,9 @@
-/* Dashboard Container */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   background: #f9fafb;
 }
 
-/* Sidebar */
 .sidebar {
   width: 280px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -72,7 +70,6 @@
   font-weight: 600;
 }
 
-/* Sidebar Navigation */
 .sidebar-nav {
   flex: 1;
   padding: 1.5rem 0;
@@ -130,7 +127,6 @@
   font-weight: inherit;
 }
 
-/* Sidebar Footer */
 .sidebar-footer {
   padding: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -158,7 +154,6 @@
   transform: translateY(-2px);
 }
 
-/* Main Content */
 .main-content {
   flex: 1;
   margin-left: 280px;
@@ -187,7 +182,6 @@
   }
 }
 
-/* Section Header */
 .section-header {
   margin-bottom: 2rem;
 }
@@ -205,7 +199,6 @@
   font-size: 1rem;
 }
 
-/* Empty State */
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -229,7 +222,6 @@
   color: #6b7280;
 }
 
-/* Richieste Grid */
 .richieste-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -293,7 +285,6 @@
   border-top: 1px solid #e5e7eb;
 }
 
-/* Badges */
 .badge {
   display: inline-block;
   padding: 0.35rem 0.75rem;
@@ -324,15 +315,12 @@
   color: #991b1b;
 }
 
-
-/* --- LAYOUT GENERALE --- */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   background: #f9fafb;
 }
 
-/* --- SIDEBAR (Uguale al professionista) --- */
 .sidebar {
   width: 280px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -391,7 +379,6 @@
   font-weight: 600;
 }
 
-/* Navigazione */
 .sidebar-nav {
   flex: 1;
   padding: 1.5rem 0;
@@ -448,8 +435,8 @@
 
 .card-actions {
   display: flex;
-  justify-content: flex-end; /* Allinea a destra */
-  gap: 10px; /* Spazio tra i bottoni */
+  justify-content: flex-end;
+  gap: 10px;
   margin-top: 15px;
   padding-top: 10px;
   border-top: 1px solid #f0f0f0;
@@ -458,7 +445,7 @@
 .btn-action {
   width: 35px;
   height: 35px;
-  border-radius: 50%; /* Rotondi */
+  border-radius: 50%;
   border: none;
   display: flex;
   align-items: center;
@@ -470,30 +457,28 @@
 }
 
 .btn-action:hover {
-  transform: scale(1.1); /* Si ingrandisce un po' */
+  transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-/* Stili specifici per colore */
 .btn-accept {
   background-color: #dcfce7;
-  color: #166534; /* Verde */
+  color: #166534;
   border: 1px solid #bbf7d0;
 }
 
 .btn-reject {
   background-color: #fee2e2;
-  color: #991b1b; /* Rosso */
+  color: #991b1b;
   border: 1px solid #fecaca;
 }
 
 .btn-view {
   background-color: #eff6ff;
-  color: #1e40af; /* Blu */
+  color: #1e40af;
   border: 1px solid #bfdbfe;
 }
 
-/* --- MAIN CONTENT --- */
 .main-content {
   flex: 1;
   margin-left: 280px;
@@ -519,7 +504,6 @@
   color: #6b7280;
 }
 
-/* --- FORM CREAZIONE RICHIESTA (NUOVO) --- */
 .create-request-container {
   display: flex;
   gap: 2rem;
@@ -585,7 +569,6 @@ textarea:focus {
   font-size: 1.1rem;
 }
 
-/* --- LISTA RICHIESTE --- */
 .richieste-list {
   display: flex;
   flex-direction: column;
@@ -597,7 +580,7 @@ textarea:focus {
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   overflow: hidden;
-  border-left: 4px solid #764ba2; /* Viola per i clienti */
+  border-left: 4px solid #764ba2;
 }
 
 .richiesta-header {
@@ -622,9 +605,8 @@ textarea:focus {
   text-align: right;
 }
 
-/* Wrapper necessario per il posizionamento "absolute" del badge */
 .icon-wrapper {
-  position: relative; /* <--- QUESTO è il trucco: blocca il badge qui dentro */
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -632,14 +614,13 @@ textarea:focus {
 
 .badge-counter {
   position: absolute;
-  /* Gioca con questi due valori per spostarlo millimetricamente */
   top: -5px;
   right: -5px;
 
   background-color: #ff3b30;
   color: white;
   border-radius: 50%;
-  width: 16px;       /* Un po' più piccolo è più elegante */
+  width: 16px;
   height: 16px;
 
   font-size: 11px;
@@ -649,12 +630,10 @@ textarea:focus {
   align-items: center;
   justify-content: center;
 
-  border: 2px solid #ffffff; /* Bordo bianco per staccare */
-  z-index: 10; /* Assicura che stia sopra la campanella */
+  border: 2px solid #ffffff;
+  z-index: 10;
 }
 
-
-/* Stili per il gruppo input indirizzo */
 .indirizzo-input-group {
   display: flex;
   gap: 10px;
@@ -689,7 +668,6 @@ textarea:focus {
   cursor: not-allowed;
 }
 
-/* Stili per mostrare l'indirizzo nelle richieste */
 .richiesta-indirizzo {
   display: flex;
   align-items: center;
@@ -710,8 +688,6 @@ textarea:focus {
   font-style: italic;
 }
 
-
-/* Badge stati */
 .badge {
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
@@ -723,7 +699,6 @@ textarea:focus {
 .badge-lavorazione { background: #dbeafe; color: #1e40af; }
 .badge-chiusa { background: #fee2e2; color: #991b1b; }
 
-/* Bottoni */
 .btn-primary {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -756,7 +731,6 @@ textarea:focus {
   border-color: #fecaca;
 }
 
-/* --- PROFILO (Preservato) --- */
 .profilo-card {
   background: white;
   border-radius: 16px;
@@ -800,14 +774,12 @@ textarea:focus {
   margin-bottom: 0.25rem;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .sidebar { width: 100%; position: relative; height: auto; }
   .main-content { margin-left: 0; padding: 1rem; }
   .create-request-container { flex-direction: column; }
 }
 
-/* Profilo Container */
 .profilo-container {
   max-width: 800px;
 }
@@ -882,7 +854,6 @@ textarea:focus {
   font-size: 1rem;
 }
 
-/* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, #2563eb, #1e40af);
   color: white;
@@ -939,7 +910,6 @@ textarea:focus {
   border-color: #991b1b;
 }
 
-/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1081,7 +1051,6 @@ textarea:focus {
   justify-content: flex-end;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -1104,7 +1073,6 @@ textarea:focus {
   }
 }
 
-
 .badge-completata {
   background: #e5e7eb;
   color: #374151;
@@ -1121,7 +1089,7 @@ textarea:focus {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.9rem;
-  margin-right: 5px; /* Spazio tra i bottoni */
+  margin-right: 5px;
 }
 
 .btn-success-small:hover {
@@ -1130,43 +1098,39 @@ textarea:focus {
   border-color: #16a34a;
 }
 
-/* Contenitore del gruppo: distanzia e allinea */
 .form-group {
   display: flex;
-  flex-direction: column; /* Mette la label sopra la select */
-  margin-bottom: 20px;    /* Spazio sotto il campo */
-  font-family: sans-serif; /* Font leggibile */
+  flex-direction: column;
+  margin-bottom: 20px;
+  font-family: sans-serif;
 }
 
-/* Stile della Label */
 .form-group label {
   font-size: 14px;
-  font-weight: 600;       /* Grassetto leggero */
-  color: #333;            /* Grigio scuro per contrasto */
-  margin-bottom: 8px;     /* Spazio tra label e select */
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
 }
 
-/* Stile della Select Box */
 .form-select-custom {
-  width: 100%;            /* Occupa tutto lo spazio disponibile */
-  padding: 10px 12px;     /* Spaziatura interna comoda */
-  font-size: 16px;        /* Dimensione testo (evita zoom su iPhone) */
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
   color: #444;
   background-color: #fff;
-  border: 1px solid #ccc; /* Bordo grigio sottile */
-  border-radius: 6px;     /* Angoli arrotondati */
-  cursor: pointer;        /* Cambia il cursore al passaggio del mouse */
-  transition: all 0.3s ease; /* Transizione morbida per l'effetto focus */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
 }
 
 .form-select-custom:focus {
-  outline: none;          /* Rimuove il bordo blu standard brutto */
-  border-color: #007bff;  /* Colore del bordo attivo (blu) */
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); /* Leggero alone blu */
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
-/* Stile per le option (funziona solo su alcuni browser/OS) */
 .form-select-custom option {
   padding: 10px;
 }

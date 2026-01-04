@@ -27,7 +27,6 @@ public class NotificaService {
         notificaRepository.deleteById(id);
     }
 
-    //Recupera le notifiche per un utente specifico
     public List<Notifica> getNotifichePerUtente(Long idUtente) {
         return notificaRepository.findByDestinatarioId(idUtente);
     }

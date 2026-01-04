@@ -69,7 +69,6 @@ public class AutenticazioneController {
     public ResponseEntity<?> richiediReset(@RequestBody Map<String, String> payload) {
         String email = payload.get("email");
         authService.avviaRecuperoPassword(email);
-        // Rispondiamo sempre OK per sicurezza (privacy), anche se la mail non esiste
         return ResponseEntity.ok("Se l'email esiste, riceverai le istruzioni.");
     }
 
@@ -97,7 +96,7 @@ public class AutenticazioneController {
         dto.setCognome(c.getCognome());
         dto.setEmail(c.getEmail());
         dto.setTelefono(c.getTelefono());
-        dto.setRuolo("CLIENTE"); // Campo utile per il frontend!
+        dto.setRuolo("CLIENTE");
         dto.setIndirizzo(c.getIndirizzo());
         return dto;
     }

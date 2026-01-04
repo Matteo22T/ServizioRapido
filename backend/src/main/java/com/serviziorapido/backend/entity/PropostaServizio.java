@@ -31,7 +31,6 @@ public class PropostaServizio {
     @JoinColumn(name = "id_professionista", nullable = false)
     private Professionista professionistaMittente;
 
-    // Getters e Setters essenziali
     public Long getIdProposta() { return idProposta; }
     public void setIdProposta(Long idProposta) { this.idProposta = idProposta; }
 

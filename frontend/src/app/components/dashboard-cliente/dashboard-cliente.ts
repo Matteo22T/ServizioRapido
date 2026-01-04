@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RichiestaService } from '../../service/richiesta-service'; // Controlla che il nome del file sia corretto
-import { ChangeDetectorRef } from '@angular/core'; // <--- 1. Importa
+import { RichiestaService } from '../../service/richiesta-service';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { NotificaService } from '../../service/notifica-service';
 import { Notifica } from '../../model/Notifica.model';
@@ -20,22 +20,18 @@ import { ProposteService } from '../../service/proposte-service';
 export class DashboardCliente implements OnInit {
 
   utente: any;
-  sezioneAttiva: string = 'nuova'; // Parte dalla schermata di creazione
+  sezioneAttiva: string = 'nuova';
   messaggio: string = '';
   conteggioBadge: number = 0;
 
-  // Array per memorizzare le richieste ricevute dal backend
   mieRichieste: any[] = [];
 
-  //  ARRAY PER LE NOTIFICHE
   listaNotifiche: Notifica[] = [];
 
-  // 2. VARIABILI PER LA MODALE
   modalAperto: boolean = false;
   listaProposte: any[] = [];
   richiestaSelezionataId: number | null = null;
 
-  // Oggetto per collegare i campi del form HTML
   nuovaRichiesta = {
     dettagli: '',
     indirizzo: '',
@@ -45,7 +41,7 @@ export class DashboardCliente implements OnInit {
   constructor(
     private router: Router,
     private richiestaService: RichiestaService,
-    private notificaService: NotificaService, //INIEZIONE SERVICE
+    private notificaService: NotificaService,
     private proposteService: ProposteService,
   private cd: ChangeDetectorRef
   ) {}
@@ -58,11 +54,9 @@ export class DashboardCliente implements OnInit {
     const saved = localStorage.getItem('currentUser');
     if (saved) {
       this.utente = JSON.parse(saved);
-      // Se è un professionista, reindirizza
       if (this.utente.ruolo === 'PROFESSIONISTA') {
         this.router.navigate(['/dashboard-professionista']);
       } else {
-        // Se è cliente, carica i suoi dati
         this.caricaMieRichieste();
         this.caricaNotifiche();
       }
@@ -88,9 +82,6 @@ export class DashboardCliente implements OnInit {
         this.listaNotifiche = data;
         this.listaNotifiche.reverse();
 
-        // LOGICA INTELLIGENTE:
-        // Se sono in un'altra pagina (es. Profilo), mostrami quante notifiche ho (es. 5).
-        // Se sono già dentro "Notifiche", non farmi vedere il numero rosso (resta 0).
         if (this.sezioneAttiva !== 'notifiche') {
           this.conteggioBadge = this.listaNotifiche.length;
         } else {
@@ -107,20 +98,17 @@ export class DashboardCliente implements OnInit {
 
   azioneDettagli(notifica: any) {
     console.log("Vado ai dettagli per notifica:", notifica.idNotifica);
-    // Cambia la tab attiva
     this.cambiaSezione('richieste');
-    // Qui potresti evidenziare la richiesta specifica se avessimo l'ID richiesta
   }
 
   apriModalProposte(idRichiesta: number) {
     this.richiestaSelezionataId = idRichiesta;
 
-    // Chiama il service per scaricare le proposte vere dal database
     this.proposteService.vediProposte(idRichiesta).subscribe({
       next: (data) => {
         this.listaProposte = data.filter((p: any) => p.statoProposta === 'INVIATA');
-        this.modalAperto = true;   // Apre la finestra popup
-        this.cd.detectChanges();   // Aggiorna la vista
+        this.modalAperto = true;
+        this.cd.detectChanges();
       },
       error: (err) => {
         console.error("Errore caricamento proposte", err);
@@ -155,7 +143,7 @@ export class DashboardCliente implements OnInit {
         next: () => {
           alert("Proposta accettata! Il lavoro è ora 'In Lavorazione'.");
           this.chiudiModal();
-          this.caricaMieRichieste(); // Ricarica per vedere lo stato aggiornato
+          this.caricaMieRichieste();
         },
         error: (err) => {
           console.error(err);
@@ -171,7 +159,6 @@ export class DashboardCliente implements OnInit {
     if (confirm("Vuoi rifiutare questa proposta?")) {
       this.proposteService.rifiuta(idProposta, this.richiestaSelezionataId).subscribe({
         next: () => {
-          // Rimuovi la proposta dalla lista visiva senza chiudere la modale
           this.listaProposte = this.listaProposte.filter(p => p.idProposta !== idProposta);
           this.cd.detectChanges()
         },
@@ -182,7 +169,6 @@ export class DashboardCliente implements OnInit {
       });
     }
   }
-  // --- LOGICA RICHIESTE ---
 
   caricaMieRichieste() {
     if (!this.utente?.id) return;
@@ -201,25 +187,21 @@ export class DashboardCliente implements OnInit {
   }
 
   pubblicaRichiesta() {
-    // 1. Validazione: controlla che i campi non siano vuoti
     if (!this.nuovaRichiesta.dettagli || !this.nuovaRichiesta.indirizzo || !this.nuovaRichiesta.categoria) {
       this.messaggio = 'Per favore, compila tutti i campi (Dettagli, Indirizzo e Categoria).';
       return;
     }
 
-    // 2. Chiamata al Service
-    // Nota: Passiamo i parametri separati come richiesto dal tuo nuovo Service
     this.richiestaService.pubblica(
       this.nuovaRichiesta.dettagli,
       this.nuovaRichiesta.indirizzo,
       this.nuovaRichiesta.categoria,
-      this.utente.id // Passiamo l'ID dell'utente loggato
+      this.utente.id
     ).subscribe({
       next: (res) => {
         console.log('Risposta server:', res);
         this.messaggio = 'Richiesta pubblicata con successo! 🚀';
 
-        // 3. Reset del form
         this.nuovaRichiesta = {
           dettagli: '',
           indirizzo: '',
@@ -227,7 +209,6 @@ export class DashboardCliente implements OnInit {
 
         };
 
-        // 4. Aggiorna la lista e cambia sezione
         this.caricaMieRichieste();
         setTimeout(() => {
           this.sezioneAttiva = 'richieste';

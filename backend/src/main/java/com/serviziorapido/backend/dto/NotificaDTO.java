@@ -5,7 +5,7 @@ import com.serviziorapido.backend.entity.StatoNotifica;
 public class NotificaDTO {
     private Long idNotifica;
     private String messaggio;
-    private String statoNotifica; // Uso String per facilità di lettura nel JSON
+    private String statoNotifica;
     private Long destinatarioId;
 
     public NotificaDTO() {

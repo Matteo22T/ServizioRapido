@@ -29,7 +29,6 @@ export class ResetPassword implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Legge il parametro ?token=... dall'URL
     this.token = this.route.snapshot.queryParams['token'];
   }
 

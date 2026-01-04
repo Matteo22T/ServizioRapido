@@ -20,7 +20,6 @@ public class RichiestaServizioService extends Subject {
     @Autowired
     private UtenteRepository utenteRepo;
 
-    // 1. INIETTA IL NOTIFICA SERVICE
     @Autowired
     private NotificaService notificaService;
 
@@ -39,14 +38,11 @@ public class RichiestaServizioService extends Subject {
 
     public List<RichiestaServizio> getRichiesteCompatibili(Long idProfessionista) {
 
-        // 1. Recupero il Professionista dal DB
         Professionista prof = (Professionista) utenteRepo.findById(idProfessionista)
                 .orElseThrow(() -> new RuntimeException("Professionista non trovato"));
 
-        // 2. Leggo la sua specializzazione (es. IDRAULICO)
         CategoriaRichiesta specializzazione = prof.getSpecializzazione();
 
-        // 3. Cerco nel DB solo le richieste APERTE + IDRAULICO
         return richiestaRepo.findByStatoRichiestaAndCategoria(
                 StatoRichiesta.APERTA,
                 specializzazione,
@@ -57,7 +53,7 @@ public class RichiestaServizioService extends Subject {
         return richiestaRepo.findByClientePubblicante_IdUtente(idCliente);
     }
 
-    @Transactional //atomicità dell'operazione
+    @Transactional
     public void annullaRichiesta(Long idRichiesta) {
         RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta)
                 .orElseThrow(() -> new RuntimeException("Richiesta non trovata con ID: " + idRichiesta));
@@ -71,7 +67,6 @@ public class RichiestaServizioService extends Subject {
         RichiestaServizio richiesta = richiestaRepo.findById(idRichiesta)
                 .orElseThrow(() -> new RuntimeException("Richiesta non trovata"));
 
-        // Controllo di sicurezza: possiamo completare solo se era in lavorazione
         if (richiesta.getStatoRichiesta() != StatoRichiesta.IN_LAVORAZIONE) {
             throw new RuntimeException("Impossibile completare: la richiesta non è in lavorazione.");
         }

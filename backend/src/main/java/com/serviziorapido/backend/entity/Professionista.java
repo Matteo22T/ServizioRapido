@@ -18,7 +18,6 @@ public class Professionista extends Utente {
     @JsonIgnore
     private List<PropostaServizio> proposteInviate;
 
-    // Getters e Setters
     public String getBiografia() { return biografia; }
     public void setBiografia(String biografia) { this.biografia = biografia; }
 

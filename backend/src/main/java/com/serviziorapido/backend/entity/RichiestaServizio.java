@@ -41,7 +41,6 @@ public class RichiestaServizio {
     @JsonIgnore
     private List<PropostaServizio> proposteRicevute;
 
-    // --- GETTER E SETTER ---
 
     public Long getIdRichiesta() { return idRichiesta; }
     public void setIdRichiesta(Long idRichiesta) { this.idRichiesta = idRichiesta; }
@@ -49,13 +48,11 @@ public class RichiestaServizio {
     public String getDettagli() { return dettagli; }
     public void setDettagli(String dettagli) { this.dettagli = dettagli; }
 
-    // Getter/Setter per i nuovi campi
     public String getIndirizzo() { return indirizzo; }
     public void setIndirizzo(String indirizzo) { this.indirizzo = indirizzo; }
 
     public CategoriaRichiesta getCategoria() { return categoria; }
     public void setCategoria(CategoriaRichiesta categoria) { this.categoria = categoria; }
-    // ------------------------------
 
     public StatoRichiesta getStatoRichiesta() { return statoRichiesta; }
     public void setStatoRichiesta(StatoRichiesta statoRichiesta) { this.statoRichiesta = statoRichiesta; }
