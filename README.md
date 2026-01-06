@@ -29,6 +29,7 @@ Se non si vogliono perdere i dati ad ogni avvio, sostituire "create" con "update
 Il sistema viene inizializzato con diversi profili pre-configurati per simulare vari scenari d'uso.
 
 🔑 PASSWORD PER TUTTI GLI UTENTI: Password123!
+
 👤 Clienti
 Mario Rossi
 Email: mario@example.com
