@@ -31,6 +31,7 @@ Il sistema viene inizializzato con diversi profili pre-configurati per simulare 
 🔑 PASSWORD PER TUTTI GLI UTENTI: Password123!
 
 👤 Clienti
+
 Mario Rossi
 Email: mario@example.com
 
@@ -41,6 +42,7 @@ Paolo Gialli
 Email: paolo@example.com
 
 🛠 Professionisti
+
 Luigi Verdi
 Email: luigi@example.com
 Specializzazione: IDRAULICO
