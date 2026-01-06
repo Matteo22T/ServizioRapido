@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,7 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  constructor(private authService: AutenticazioneService, private router: Router) {}
+  constructor(private authService: AutenticazioneService, private router: Router, private cd: ChangeDetectorRef) {}
 
   login() {
     console.log('login start', { email: this.email, hasPassword: !!this.password });
@@ -46,7 +46,8 @@ export class LoginComponent {
       },
       error: (err) => {
         console.error('login error:', err);
-        this.errore = err?.error?.message ?? err?.message ?? 'Credenziali errate o utente non trovato';
+        this.errore = 'Credenziali errate o utente non trovato';
+        this.cd.detectChanges();
       }
     });
   }
