@@ -15,7 +15,7 @@ public class Notifica {
     private String messaggio;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "stato_invio", columnDefinition = "stato_invio")
+    @Column(name = "stato_invio")
     private StatoNotifica statoNotifica;
 
     @Column(name = "destinatario", nullable = false)
