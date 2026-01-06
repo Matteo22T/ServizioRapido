@@ -23,6 +23,39 @@ Il progetto utilizza PostgreSQL. Prima di avviare l'applicazione, assicurarsi di
 Le credenziali di accesso al DB sono configurate in src/main/resources/application.properties.
 
 L'applicazione è configurata con spring.jpa.hibernate.ddl-auto=create, in modo da essere testata con più facilità. Ad ogni avvio, il database viene automaticamente svuotato, ricreato e popolato con i dati di test presenti nel file data.sql.
-Se non si vogliono perdere i dati ad ogni avvio, sostituire "create" con "update" ed eliminare il file data.sql, è presente un file dump del db  
+Se non si vogliono perdere i dati ad ogni avvio, sostituire "create" con "update" ed eliminare il file data.sql, sono presenti inoltre 2 file dump del db, uno utilizzabile su dbeaver, l'altro è invece un file sql "dump-ServizioRapido-202601061346.sql"
+
+(Dati di Test)
+Il sistema viene inizializzato con diversi profili pre-configurati per simulare vari scenari d'uso.
+
+🔑 PASSWORD PER TUTTI GLI UTENTI: Password123!
+👤 Clienti
+Mario Rossi
+Email: mario@example.com
+
+Anna Neri
+Email: anna@example.com
+
+Paolo Gialli
+Email: paolo@example.com
+
+🛠 Professionisti
+Luigi Verdi
+Email: luigi@example.com
+Specializzazione: IDRAULICO
+
+Giovanni Bianchi
+Email: giovanni@example.com
+Specializzazione: ELETTRICISTA
+
+Marco Viola
+Email: marco@example.com
+Specializzazione: IDRAULICO
+
+Giuseppe Ferro
+Email: giuseppe@example.com
+Specializzazione: FABBRO
+
+
 
 
