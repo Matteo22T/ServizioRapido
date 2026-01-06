@@ -22,7 +22,7 @@ Istruzioni per l'Avvio
 Il progetto utilizza PostgreSQL. Prima di avviare l'applicazione, assicurarsi di aver creato un database vuoto nominato ServizioRapido.
 Le credenziali di accesso al DB sono configurate in src/main/resources/application.properties.
 
-L'applicazione è configurata con spring.jpa.hibernate.ddl-auto=create, in modo da essere testata con più facilità. Ad ogni avvio, il database viene automaticamente svuotato, ricreato e popolato con i dati di test presenti nel file data.sql.
+Per il solo scopo di ottenere il db pronto l'applicazione è configurata con spring.jpa.hibernate.ddl-auto=create, in modo da essere testata con più facilità. Ad ogni avvio, il database viene automaticamente svuotato, ricreato e popolato con i dati di test presenti nel file data.sql.
 Se non si vogliono perdere i dati ad ogni avvio, sostituire "create" con "update" ed eliminare il file data.sql, sono presenti inoltre 2 file dump del db, uno utilizzabile su dbeaver, l'altro è invece un file sql "dump-ServizioRapido-202601061346.sql"
 
 (Dati di Test)
