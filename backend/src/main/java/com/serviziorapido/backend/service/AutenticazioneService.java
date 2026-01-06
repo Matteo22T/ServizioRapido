@@ -5,6 +5,7 @@ import com.serviziorapido.backend.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -24,16 +25,21 @@ public class AutenticazioneService {
     @Autowired
     private UtenteRepository utenteRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Utente autenticaUtente(String email, String password) {
         Optional<Utente> utente = utenteRepo.findByEmail(email);
-        if (utente.isPresent() && utente.get().getPassword().equals(password) ) {
+        if (utente.isPresent() && passwordEncoder.matches(password, utente.get().getPassword())) {
             return utente.get();
         }
-        return null; // Login fallito
+        return null;
     }
 
     public Utente registraUtente(Utente utente) {
         verificaInformazioni(utente);
+        String passwordCriptata = passwordEncoder.encode(utente.getPassword());
+        utente.setPassword(passwordCriptata);
         return utenteRepo.save(utente);
     }
 
@@ -109,7 +115,7 @@ public class AutenticazioneService {
         }
 
         verificaInformazioni(utente);
-        utente.setPassword(nuovaPassword);
+        utente.setPassword(passwordEncoder.encode(nuovaPassword));
         utente.setResetToken(null);
         utente.setResetTokenScadenza(null);
 
