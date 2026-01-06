@@ -53,7 +53,7 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error(err);
-        this.messaggio = err.error || 'Errore durante la registrazione. Controlla i dati.';
+        this.messaggio = 'Errore durante la registrazione. Controlla i dati.';
       }
     });
   }

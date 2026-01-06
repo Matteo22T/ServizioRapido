@@ -58,7 +58,7 @@ export class ResetPassword implements OnInit {
         }, 3000);
       },
       error: (err) => {
-        this.messaggio = err?.error?.message ?? 'Errore di connessione. Riprova più tardi.';
+        this.messaggio = 'Password non valida o link scaduto. Riprova.';
         this.isErrore = true;
         this.mostraToast = true;
 
