@@ -14,3 +14,15 @@ La classe Subject contiene i metodi attach, detach e notify.
 Le classi PropostaServizioService e RichiestaServizioService sono i ConcreteSubjects che andranno ad utilizzare il metodo notify quando bisognerà inviare una notifica al destinatario dovuto.
 (precisamente nei metodi pubblica, modifica, elimina, accetta, rifiuta, della classe PropostaServizioService e nel metodo annulla di RichiestaServizioService) 
 
+
+
+
+Istruzioni per l'Avvio
+1. Configurazione Database
+Il progetto utilizza PostgreSQL. Prima di avviare l'applicazione, assicurarsi di aver creato un database vuoto nominato ServizioRapido.
+Le credenziali di accesso al DB sono configurate in src/main/resources/application.properties.
+
+L'applicazione è configurata con spring.jpa.hibernate.ddl-auto=create, in modo da essere testata con più facilità. Ad ogni avvio, il database viene automaticamente svuotato, ricreato e popolato con i dati di test presenti nel file data.sql.
+Se non si vogliono perdere i dati ad ogni avvio, sostituire "create" con "update" ed eliminare il file data.sql, è presente un file dump del db  
+
+
